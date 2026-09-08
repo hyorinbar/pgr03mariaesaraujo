@@ -4,6 +4,7 @@
  */
 package br.com.ifba.usuario.view;
 
+import br.com.ifba.usuario.validar.ValidadorUsuario;
 import java.awt.Color;
 import java.time.LocalDateTime;
 import javax.swing.BorderFactory;
@@ -228,11 +229,11 @@ public class TelaCadastro extends javax.swing.JFrame {
     private void criarContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_criarContaActionPerformed
         // teste para funcionamento do botão criar conta   
         
-        if (ValidadorUsuario.contemPalavraProibida(txtNomeCompleto.getText())) {
+        if (ValidadorUsuario.contemPalavraProibida(txtNome.getText())) {
             JOptionPane.showMessageDialog(
                     this,
-                    "O nome contém uma palavra proibida.",
-                    "Erro",
+                    "O nome de usuário contém uma palavra proibida.",
+                    "Error",
                     JOptionPane.ERROR_MESSAGE
             );
 
