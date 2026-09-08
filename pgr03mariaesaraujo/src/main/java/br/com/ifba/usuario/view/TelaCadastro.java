@@ -4,6 +4,7 @@
  */
 package br.com.ifba.usuario.view;
 
+import br.com.ifba.usuario.validar.ValidadorUsuario;
 import java.awt.Color;
 import java.time.LocalDateTime;
 import javax.swing.BorderFactory;
@@ -41,7 +42,7 @@ public class TelaCadastro extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtConfirmarSenha = new javax.swing.JPasswordField();
         criarConta = new javax.swing.JButton();
-        txtNomeCompleto = new javax.swing.JTextField();
+        txtNome = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         boxGenero = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
@@ -80,13 +81,13 @@ public class TelaCadastro extends javax.swing.JFrame {
         criarConta.setText("Criar Conta");
         criarConta.addActionListener(this::criarContaActionPerformed);
 
-        txtNomeCompleto.setBackground(new java.awt.Color(187, 233, 250));
-        txtNomeCompleto.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
-        txtNomeCompleto.addActionListener(this::txtNomeCompletoActionPerformed);
+        txtNome.setBackground(new java.awt.Color(187, 233, 250));
+        txtNome.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
+        txtNome.addActionListener(this::txtNomeActionPerformed);
 
         jLabel6.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Nome Completo");
+        jLabel6.setText("Nome de Usuario");
 
         boxGenero.setBackground(new java.awt.Color(187, 233, 250));
         boxGenero.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
@@ -149,7 +150,7 @@ public class TelaCadastro extends javax.swing.JFrame {
                                 .addComponent(jLabel7)
                                 .addComponent(jLabel5)
                                 .addComponent(jLabel6)
-                                .addComponent(txtNomeCompleto, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
+                                .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
                                 .addComponent(jLabel2)
                                 .addComponent(txtCPF)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -173,7 +174,7 @@ public class TelaCadastro extends javax.swing.JFrame {
                 .addGap(44, 44, 44)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtNomeCompleto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -226,10 +227,21 @@ public class TelaCadastro extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCPFActionPerformed
 
     private void criarContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_criarContaActionPerformed
-        // teste para funcionamento do botão criar conta                                                                                   
+        // teste para funcionamento do botão criar conta   
+        
+        if (ValidadorUsuario.contemPalavraProibida(txtNome.getText())) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "O nome de usuário contém uma palavra proibida.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+
+            return;
+        }
 
     // Verificar se algum campo está vazio
-    if (txtNomeCompleto.getText().isEmpty() || txtCPF.getText().isEmpty() || txtDataNasc.getText().isEmpty()
+    if (txtNome.getText().isEmpty() || txtCPF.getText().isEmpty() || txtDataNasc.getText().isEmpty()
         || txtTel.getText().isEmpty() || txtEmail.getText().isEmpty() || new String(txtSenha.getPassword()).isEmpty()
          || new String(txtConfirmarSenha.getPassword()).isEmpty()) {
 
@@ -262,9 +274,9 @@ public class TelaCadastro extends javax.swing.JFrame {
 
     }//GEN-LAST:event_criarContaActionPerformed
 
-    private void txtNomeCompletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeCompletoActionPerformed
+    private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNomeCompletoActionPerformed
+    }//GEN-LAST:event_txtNomeActionPerformed
 
     private void boxGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxGeneroActionPerformed
         // TODO add your handling code here:
@@ -334,7 +346,7 @@ public class TelaCadastro extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtConfirmarSenha;
     private javax.swing.JTextField txtDataNasc;
     private javax.swing.JTextField txtEmail;
-    private javax.swing.JTextField txtNomeCompleto;
+    private javax.swing.JTextField txtNome;
     private javax.swing.JPasswordField txtSenha;
     private javax.swing.JTextField txtTel;
     // End of variables declaration//GEN-END:variables
