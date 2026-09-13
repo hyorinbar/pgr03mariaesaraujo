@@ -4,10 +4,8 @@
  */
 package br.com.ifba.usuario.view;
 
-/**
- *
- * @author guest
- */
+import br.com.ifba.usuario.entity.Usuario;
+
 public class ViewLogin extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ViewLogin.class.getName());
@@ -140,13 +138,16 @@ public class ViewLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSenhaActionPerformed
 
     private void entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entrarActionPerformed
-        // teste para funcionamento do botão entrar
-    String login = txtLogin.getText();
-    String senha = new String(txtSenha.getPassword());
-
+    // Cria o objeto e preenche com os valores dos campos
+    Usuario usuario = new Usuario();
+    
+    usuario.nome = txtLogin.getText();
+    usuario.senha = new String(txtSenha.getPassword());
+    
+    // Tudo certo
     confirmar.showMessageDialog(
         this,
-        "Login: " + login + "\nSenha: " + senha,
+        "Login: " + usuario.nome + "\nSenha: " + usuario.senha,
         "Dados digitados",
         confirmar.INFORMATION_MESSAGE
     );
