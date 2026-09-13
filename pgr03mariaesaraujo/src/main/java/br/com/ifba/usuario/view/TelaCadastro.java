@@ -5,6 +5,7 @@
 package br.com.ifba.usuario.view;
 
 import br.com.ifba.usuario.validar.ValidadorUsuario;
+import br.com.ifba.usuario.entity.Usuario;
 import java.awt.Color;
 import java.time.LocalDateTime;
 import javax.swing.BorderFactory;
@@ -227,51 +228,51 @@ public class TelaCadastro extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCPFActionPerformed
 
     private void criarContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_criarContaActionPerformed
-        // teste para funcionamento do botão criar conta   
-        
+        //Verificação de palavra proibida
         if (ValidadorUsuario.contemPalavraProibida(txtNome.getText())) {
-            JOptionPane.showMessageDialog(
-                    this,
+            JOptionPane.showMessageDialog(this,
                     "O nome de usuário contém uma palavra proibida.",
                     "Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
-
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
+        //Verificação de campos vazios
+        if (txtNome.getText().isEmpty() || txtCPF.getText().isEmpty() || txtDataNasc.getText().isEmpty()
+            || txtTel.getText().isEmpty() || txtEmail.getText().isEmpty()
+            || new String(txtSenha.getPassword()).isEmpty()
+            || new String(txtConfirmarSenha.getPassword()).isEmpty()) {
 
-    // Verificar se algum campo está vazio
-    if (txtNome.getText().isEmpty() || txtCPF.getText().isEmpty() || txtDataNasc.getText().isEmpty()
-        || txtTel.getText().isEmpty() || txtEmail.getText().isEmpty() || new String(txtSenha.getPassword()).isEmpty()
-         || new String(txtConfirmarSenha.getPassword()).isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Preencha todos os campos.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            
+        //Verificação de senha
+        } else if (!new String(txtSenha.getPassword()).equals(new String(txtConfirmarSenha.getPassword()))) {
 
-        JOptionPane.showMessageDialog(
-                this,
-                "Preencha todos os campos.",
-                "Error",
-                JOptionPane.ERROR_MESSAGE
-        );
+            JOptionPane.showMessageDialog(this,
+                    "As senhas não coincidem.", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
 
-    // Verificar se as senhas são diferentes
-    } else if (!new String(txtSenha.getPassword()).equals(new String(txtConfirmarSenha.getPassword()))) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "As senhas não coincidem.",
-                "Error",
-                JOptionPane.ERROR_MESSAGE
-        );
-
-    // Tudo certo
-    } else {
-        JOptionPane.showMessageDialog(
-                this,
-                "Cadastro realizado com sucesso!",
-                "Sucesso",
-                JOptionPane.INFORMATION_MESSAGE
-        );
-    }
-
+        } else {
+            //Instanciar Usuario
+            Usuario usuario = new Usuario();
+            
+            usuario.nome = txtNome.getText();
+            usuario.cpf = txtCPF.getText();
+            usuario.genero = (String) boxGenero.getSelectedItem();
+            usuario.dataNascimento = txtDataNasc.getText();
+            usuario.tel = txtTel.getText();
+            usuario.email = txtEmail.getText();
+            usuario.senha = new String(txtSenha.getPassword());
+            
+            //Tudo Certo
+            JOptionPane.showMessageDialog(this, 
+                    "Cadastro realizado com sucesso!", 
+                    "Sucesso", 
+                    JOptionPane.INFORMATION_MESSAGE);
+        }   
     }//GEN-LAST:event_criarContaActionPerformed
 
     private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
