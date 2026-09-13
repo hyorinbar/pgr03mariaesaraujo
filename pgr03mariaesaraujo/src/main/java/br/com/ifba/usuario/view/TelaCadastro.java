@@ -238,27 +238,27 @@ public class TelaCadastro extends javax.swing.JFrame {
         }
         //Verificação de campos vazios
         if (txtNome.getText().isEmpty() || txtCPF.getText().isEmpty() || txtDataNasc.getText().isEmpty()
-            || txtTel.getText().isEmpty() || txtEmail.getText().isEmpty()
-            || new String(txtSenha.getPassword()).isEmpty()
-            || new String(txtConfirmarSenha.getPassword()).isEmpty()) {
+                || txtTel.getText().isEmpty() || txtEmail.getText().isEmpty()
+                || new String(txtSenha.getPassword()).isEmpty()
+                || new String(txtConfirmarSenha.getPassword()).isEmpty()) {
 
             JOptionPane.showMessageDialog(this,
                     "Preencha todos os campos.",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
-            
-        //Verificação de senha
+
+            //Verificação de senha
         } else if (!new String(txtSenha.getPassword()).equals(new String(txtConfirmarSenha.getPassword()))) {
 
             JOptionPane.showMessageDialog(this,
-                    "As senhas não coincidem.", 
-                    "Error", 
+                    "As senhas não coincidem.",
+                    "Error",
                     JOptionPane.ERROR_MESSAGE);
 
         } else {
             //Instanciar Usuario
             Usuario usuario = new Usuario();
-            
+
             usuario.nome = txtNome.getText();
             usuario.cpf = txtCPF.getText();
             usuario.genero = (String) boxGenero.getSelectedItem();
@@ -266,13 +266,13 @@ public class TelaCadastro extends javax.swing.JFrame {
             usuario.tel = txtTel.getText();
             usuario.email = txtEmail.getText();
             usuario.senha = new String(txtSenha.getPassword());
-            
+
             //Tudo Certo
-            JOptionPane.showMessageDialog(this, 
-                    "Cadastro realizado com sucesso!", 
-                    "Sucesso", 
+            JOptionPane.showMessageDialog(this,
+                    "Cadastro realizado com sucesso!",
+                    "Sucesso",
                     JOptionPane.INFORMATION_MESSAGE);
-        }   
+        }
     }//GEN-LAST:event_criarContaActionPerformed
 
     private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
