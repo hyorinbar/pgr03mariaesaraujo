@@ -256,22 +256,22 @@ public class TelaCadastro extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
 
         } else {
-            //Instanciar Usuario
-            Usuario usuario = new Usuario();
+            Usuario usuario = new Usuario(
+                txtNome.getText(),
+                txtCPF.getText(),
+                boxGenero.getSelectedItem().toString(),
+                txtDataNasc.getText(),
+                txtTel.getText(),
+                txtEmail.getText(),
+                new String(txtSenha.getPassword())
+            );
 
-            usuario.nome = txtNome.getText();
-            usuario.cpf = txtCPF.getText();
-            usuario.genero = (String) boxGenero.getSelectedItem();
-            usuario.dataNascimento = txtDataNasc.getText();
-            usuario.tel = txtTel.getText();
-            usuario.email = txtEmail.getText();
-            usuario.senha = new String(txtSenha.getPassword());
-
-            //Tudo Certo
-            JOptionPane.showMessageDialog(this,
-                    "Cadastro realizado com sucesso!",
-                    "Sucesso",
-                    JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(
+                this,
+                "Usuário " + usuario.getNome() + " cadastrado com sucesso!",
+                "Sucesso",
+                JOptionPane.INFORMATION_MESSAGE
+            );
         }
     }//GEN-LAST:event_criarContaActionPerformed
 

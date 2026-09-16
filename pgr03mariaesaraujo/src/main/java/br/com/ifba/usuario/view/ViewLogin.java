@@ -138,20 +138,26 @@ public class ViewLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSenhaActionPerformed
 
     private void entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entrarActionPerformed
-    // Cria o objeto e preenche com os valores dos campos
-    Usuario usuario = new Usuario();
-    
-    usuario.nome = txtLogin.getText();
-    usuario.senha = new String(txtSenha.getPassword());
-    
-    // Tudo certo
-    confirmar.showMessageDialog(
-        this,
-        "Login: " + usuario.nome + "\nSenha: " + usuario.senha,
-        "Dados digitados",
-        confirmar.INFORMATION_MESSAGE
-    );
+        String nome = txtLogin.getText();
+        String senha = new String(txtSenha.getPassword());
 
+        Usuario usuario = new Usuario(
+            nome,
+            "",       // cpf
+            "",       // genero
+            "",       // dataNascimento
+            "",       // tel
+            "",       // email
+            senha
+        );
+
+        confirmar.showMessageDialog(
+            this,
+            "Login: " + usuario.getNome() +
+            "\nSenha: " + usuario.getSenha(),
+            "Dados digitados",
+            confirmar.INFORMATION_MESSAGE
+        );
     }//GEN-LAST:event_entrarActionPerformed
 
     private void lblCadastrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCadastrarMouseClicked
