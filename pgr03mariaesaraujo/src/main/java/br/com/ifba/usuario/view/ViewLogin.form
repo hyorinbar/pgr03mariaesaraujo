@@ -6,6 +6,8 @@
     </Component>
     <Component class="javax.swing.JOptionPane" name="confirmar">
     </Component>
+    <Component class="javax.swing.JOptionPane" name="error">
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>

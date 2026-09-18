@@ -29,6 +29,7 @@ public class ViewLogin extends javax.swing.JFrame {
 
         jOptionPane1 = new javax.swing.JOptionPane();
         confirmar = new javax.swing.JOptionPane();
+        error = new javax.swing.JOptionPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtLogin = new javax.swing.JTextField();
@@ -138,20 +139,37 @@ public class ViewLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSenhaActionPerformed
 
     private void entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entrarActionPerformed
-    // Cria o objeto e preenche com os valores dos campos
-    Usuario usuario = new Usuario();
-    
-    usuario.nome = txtLogin.getText();
-    usuario.senha = new String(txtSenha.getPassword());
-    
-    // Tudo certo
-    confirmar.showMessageDialog(
-        this,
-        "Login: " + usuario.nome + "\nSenha: " + usuario.senha,
-        "Dados digitados",
-        confirmar.INFORMATION_MESSAGE
-    );
+        String login = txtLogin.getText();
+        String senha = new String(txtSenha.getPassword());
 
+        Usuario usuario = new Usuario(
+            "dudasodre",
+            "",       // cpf
+            "",       // genero
+            "",       // dataNascimento
+            "",       // tel
+            "",       // email
+            "duda4321"
+        );
+        
+        if (usuario.autenticar(login, senha)) {
+
+            confirmar.showMessageDialog(
+                this,
+                "Acesso liberado!",
+                "Login",
+                confirmar.INFORMATION_MESSAGE
+            );
+
+        } else {
+
+            error.showMessageDialog(
+                this,
+                "Acesso negado!\nTente novamente.",
+                "Erro",
+                error.ERROR_MESSAGE
+            );
+        }
     }//GEN-LAST:event_entrarActionPerformed
 
     private void lblCadastrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCadastrarMouseClicked
@@ -187,6 +205,7 @@ public class ViewLogin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JOptionPane confirmar;
     private javax.swing.JButton entrar;
+    private javax.swing.JOptionPane error;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
