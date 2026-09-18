@@ -268,7 +268,7 @@ public class TelaCadastro extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(
                 this,
-                "Usuário " + usuario.getNome() + " cadastrado com sucesso!",
+                "Usuário " + usuario.getLogin() + " cadastrado com sucesso!",
                 "Sucesso",
                 JOptionPane.INFORMATION_MESSAGE
             );

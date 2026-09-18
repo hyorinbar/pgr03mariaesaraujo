@@ -4,25 +4,30 @@
  */
 package br.com.ifba.usuario.entity;
 
+import br.com.ifba.usuario.interfaces.Autenticavel;
 /**
  *
  * @author guest
  */
-public class Usuario {
+public class Usuario implements Autenticavel {
     //variaveis publicas sem metodos. 
-    private String nome;
+    private String login;
     private String cpf;
     private String genero;
     private String dataNascimento;
     private String tel;
     private String email;
     private String senha;
+    
+    public boolean autenticar(String login, String senha) {
+        return this.login.equals(login) && this.senha.equals(senha);
+    }
 
     public Usuario() {
     }
 
-    public Usuario(String nome, String cpf, String genero, String dataNascimento, String tel, String email, String senha) {
-        this.nome = nome;
+    public Usuario(String login, String cpf, String genero, String dataNascimento, String tel, String email, String senha) {
+        this.login = login;
         this.cpf = cpf;
         this.genero = genero;
         this.dataNascimento = dataNascimento;
@@ -31,12 +36,12 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public String getNome() {
-        return nome;
+    public String getLogin() {
+        return login;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setLogin(String nome) {
+        this.login = login;
     }
 
     public String getCpf() {
