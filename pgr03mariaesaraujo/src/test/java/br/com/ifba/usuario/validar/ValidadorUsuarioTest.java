@@ -114,11 +114,11 @@ public class ValidadorUsuarioTest {
         assertFalse(error);
     }
     
-    @Test
+        @Test
     public void testarSeOLoginFoiRealizadoComCredenciaisCorretas() {
-        Usuario usuario = new Usuario("admin", "12345678987", "feminino", "18/01/2005", "74991070780", "maria@gmail.com", "duda4321");
+        Usuario usuario = new Usuario("duda", "12345678987", "feminino", "18/01/2005", "74991070780", "maria@gmail.com", "duda4321");
 
-        boolean error = usuario.autenticar("admin", "duda4321");
+        boolean error = usuario.autenticar("duda", "duda4321");
 
         assertTrue(error);
     }
