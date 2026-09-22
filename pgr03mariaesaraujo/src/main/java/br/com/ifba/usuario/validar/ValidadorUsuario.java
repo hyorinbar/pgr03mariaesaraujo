@@ -42,9 +42,15 @@ public class ValidadorUsuario {
 
     public static boolean cpfValido(String cpf) {
 
-        String cpfNumeros = cpf.replaceAll("\\D", "");
+        if (cpf == null || cpf.isEmpty()) {
+            return false;
+        }
 
-        return cpfNumeros.length() == 11;
+        if (!cpf.matches("\\d{11}")) {
+            return false;
+        }
+
+        return true;
     }
 
     public static boolean senhaForte(String senha) {
