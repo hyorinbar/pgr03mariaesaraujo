@@ -228,51 +228,105 @@ public class TelaCadastro extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCPFActionPerformed
 
     private void criarContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_criarContaActionPerformed
-        //Verificação de palavra proibida
-        if (ValidadorUsuario.contemPalavraProibida(txtNome.getText())) {
-            JOptionPane.showMessageDialog(this,
-                    "O nome de usuário contém uma palavra proibida.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        //Verificação de campos vazios
-        if (txtNome.getText().isEmpty() || txtCPF.getText().isEmpty() || txtDataNasc.getText().isEmpty()
-                || txtTel.getText().isEmpty() || txtEmail.getText().isEmpty()
-                || new String(txtSenha.getPassword()).isEmpty()
-                || new String(txtConfirmarSenha.getPassword()).isEmpty()) {
+        String nome = txtNome.getText();
+        String cpf = txtCPF.getText();
+        String dataNascimento = txtDataNasc.getText();
+        String telefone = txtTel.getText();
+        String email = txtEmail.getText();
 
-            JOptionPane.showMessageDialog(this,
-                    "Preencha todos os campos.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+        String senha = new String(txtSenha.getPassword());
+        String confirmarSenha = new String(txtConfirmarSenha.getPassword());
 
-            //Verificação de senha
-        } else if (!new String(txtSenha.getPassword()).equals(new String(txtConfirmarSenha.getPassword()))) {
-
-            JOptionPane.showMessageDialog(this,
-                    "As senhas não coincidem.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-
-        } else {
-            Usuario usuario = new Usuario(
-                txtNome.getText(),
-                txtCPF.getText(),
-                boxGenero.getSelectedItem().toString(),
-                txtDataNasc.getText(),
-                txtTel.getText(),
-                txtEmail.getText(),
-                new String(txtSenha.getPassword())
-            );
+        // Verificação de campos vazios
+        if (!ValidadorUsuario.camposPreenchidos(
+                nome,
+                cpf,
+                dataNascimento,
+                telefone,
+                email,
+                senha,
+                confirmarSenha)) {
 
             JOptionPane.showMessageDialog(
+                    this,
+                    "Preencha todos os campos.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+
+            return;
+        }
+
+        // Verificação de palavra proibida
+        if (ValidadorUsuario.contemPalavraProibida(nome)) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "O nome de usuário contém uma palavra proibida.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+
+            return;
+        }
+
+        // Verificação do CPF
+        if (!ValidadorUsuario.cpfValido(cpf)) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "CPF inválido.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+
+            return;
+        }
+
+        // Verificação da força da senha
+        if (!ValidadorUsuario.senhaForte(senha)) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "A senha deve possuir pelo menos 8 caracteres, "
+                    + "uma letra maiúscula, uma letra minúscula e um número.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+
+            return;
+        }
+
+        // Verificação das senhas
+        if (!ValidadorUsuario.senhasConferem(senha, confirmarSenha)) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "As senhas não coincidem.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+
+            return;
+        }
+
+        // Criação do usuário
+        Usuario usuario = new Usuario(
+                nome,
+                cpf,
+                boxGenero.getSelectedItem().toString(),
+                dataNascimento,
+                telefone,
+                email,
+                senha
+        );
+
+        JOptionPane.showMessageDialog(
                 this,
                 "Usuário " + usuario.getLogin() + " cadastrado com sucesso!",
                 "Sucesso",
                 JOptionPane.INFORMATION_MESSAGE
-            );
-        }
+        );
     }//GEN-LAST:event_criarContaActionPerformed
 
     private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
