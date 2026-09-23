@@ -13,5 +13,11 @@ import br.com.ifba.usuario.entity.TipoUsuario;
 public class Perfil {
     private TipoUsuario tipo;
 
-    
+    public TipoUsuario getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoUsuario tipo) {
+        this.tipo = tipo;
+    }
 }
