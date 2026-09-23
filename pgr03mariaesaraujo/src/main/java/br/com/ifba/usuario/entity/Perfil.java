@@ -4,10 +4,14 @@
  */
 package br.com.ifba.usuario.entity;
 
+import br.com.ifba.usuario.entity.TipoUsuario;
+
 /**
  *
  * @author guest
  */
 public class Perfil {
     private TipoUsuario tipo;
+
+    
 }

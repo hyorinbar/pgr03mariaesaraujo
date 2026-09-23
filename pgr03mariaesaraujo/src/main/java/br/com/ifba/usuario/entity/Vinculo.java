@@ -4,10 +4,13 @@
  */
 package br.com.ifba.usuario.entity;
 
+import br.com.ifba.usuario.entity.Status;
+
 /**
  *
  * @author guest
  */
 public class Vinculo {
-    
+    private int id;
+    private Status status;
 }

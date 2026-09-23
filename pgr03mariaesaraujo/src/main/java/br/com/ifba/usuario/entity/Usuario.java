@@ -23,7 +23,7 @@ public class Usuario implements Autenticavel {
     private String tel;
     private String email;
     private String senha;
-    private List<Perfil> perfil;
+    private List<Perfil> perfis;
     private List<Vinculo> vinculos;
     
     public boolean autenticar(String login, String senha) {
@@ -98,13 +98,17 @@ public class Usuario implements Autenticavel {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-    
-        public List<Perfil> getPerfil() {
-        return perfil;
+
+    public List<Perfil> getPerfis() {
+        return perfis;
     }
 
-    public void setPerfil(List<Perfil> perfil) {
-        this.perfil = perfil;
+    public void setPerfis(List<Perfil> perfis) {
+        this.perfis = perfis;
+    }
+    
+    public void adicionarPerfil(Perfil perfil) {
+        perfis.add(perfil);
     }
 
     public List<Vinculo> getVinculos() {
@@ -113,5 +117,9 @@ public class Usuario implements Autenticavel {
 
     public void setVinculos(List<Vinculo> vinculos) {
         this.vinculos = vinculos;
+    }
+    
+    public void adicionarVinculo(Vinculo vinculo) {
+    vinculos.add(vinculo);
     }
 }

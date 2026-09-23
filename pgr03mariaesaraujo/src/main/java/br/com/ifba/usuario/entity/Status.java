@@ -8,6 +8,8 @@ package br.com.ifba.usuario.entity;
  *
  * @author guest
  */
-public class Status {
-    
+public enum Status {
+    PENDENTE,
+    ATIVO,
+    INATIVO
 }

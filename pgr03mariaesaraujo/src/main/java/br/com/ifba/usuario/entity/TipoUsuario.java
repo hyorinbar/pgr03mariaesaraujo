@@ -8,6 +8,7 @@ package br.com.ifba.usuario.entity;
  *
  * @author guest
  */
-public class TipoUsuario {
-    
+public enum TipoUsuario {
+    PACIENTE,
+    PSICOLOGO
 }
