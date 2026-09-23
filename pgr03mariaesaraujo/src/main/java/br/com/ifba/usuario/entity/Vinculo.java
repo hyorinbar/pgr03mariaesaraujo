@@ -8,6 +8,6 @@ package br.com.ifba.usuario.entity;
  *
  * @author guest
  */
-public class Perfil {
-    private TipoUsuario tipo;
+public class Vinculo {
+    
 }

@@ -5,6 +5,11 @@
 package br.com.ifba.usuario.entity;
 
 import br.com.ifba.usuario.interfaces.Autenticavel;
+import br.com.ifba.usuario.entity.Perfil;
+import br.com.ifba.usuario.entity.Vinculo;
+
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author guest
@@ -18,8 +23,8 @@ public class Usuario implements Autenticavel {
     private String tel;
     private String email;
     private String senha;
-    private Perfil perfil;
-    private Status status;
+    private List<Perfil> perfil;
+    private List<Vinculo> vinculos;
     
     public boolean autenticar(String login, String senha) {
         return this.login.equals(login) && this.senha.equals(senha);
@@ -94,19 +99,19 @@ public class Usuario implements Autenticavel {
         this.senha = senha;
     }
     
-        public Perfil getPerfil() {
+        public List<Perfil> getPerfil() {
         return perfil;
     }
 
-    public void setPerfil(Perfil perfil) {
+    public void setPerfil(List<Perfil> perfil) {
         this.perfil = perfil;
     }
 
-    public Status getStatus() {
-        return status;
+    public List<Vinculo> getVinculos() {
+        return vinculos;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setVinculos(List<Vinculo> vinculos) {
+        this.vinculos = vinculos;
     }
 }
