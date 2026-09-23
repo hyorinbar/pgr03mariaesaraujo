@@ -18,6 +18,8 @@ public class Usuario implements Autenticavel {
     private String tel;
     private String email;
     private String senha;
+    private Perfil perfil;
+    private Status status;
     
     public boolean autenticar(String login, String senha) {
         return this.login.equals(login) && this.senha.equals(senha);
@@ -90,5 +92,21 @@ public class Usuario implements Autenticavel {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+    
+        public Perfil getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
