@@ -32,4 +32,9 @@ public class Psicologo extends Usuario {
     public void setCrp(String crp) {
         this.crp = crp;
     }
+    
+    @Override
+    public String getTipo() {
+    return "Psicologo";
+    }
 }
