@@ -45,4 +45,27 @@ public class UsuarioTest {
 
         assertTrue(usuario.getPerfis().contains(perfil));
     }
+
+    @Test
+    void deveUsarMetodoHerdado() {
+        Paciente paciente = new Paciente();
+
+        paciente.setEmail("paciente@email.com");
+
+        assertEquals("paciente@email.com", paciente.getEmail());
+    }
+
+    @Test
+    void pacienteDeveRetornarSeuProprioTipo() {
+        Paciente paciente = new Paciente();
+
+        assertEquals("Paciente", paciente.getTipo());
+    }
+
+    @Test
+    void psicologoDeveRetornarSeuProprioTipo() {
+        Psicologo psicologo = new Psicologo();
+
+        assertEquals("Psicologo", psicologo.getTipo());
+    }
 }

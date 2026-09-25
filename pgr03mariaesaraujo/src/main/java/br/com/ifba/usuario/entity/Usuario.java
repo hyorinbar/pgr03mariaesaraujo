@@ -58,6 +58,10 @@ public class Usuario implements Autenticavel {
         this.perfis = perfis;
         this.vinculos = vinculos;
     }
+    
+    public String getTipo() {
+    return "Usuario";
+    }
 
     public String getLogin() {
         return login;

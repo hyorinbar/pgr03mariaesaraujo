@@ -4,20 +4,18 @@
  */
 package br.com.ifba.usuario.entity;
 
-import br.com.ifba.usuario.entity.TipoUsuario;
-
 /**
  *
  * @author guest
  */
 public class Perfil {
-    private TipoUsuario tipo;
+    private String imagemURL;
 
-    public TipoUsuario getTipo() {
-        return tipo;
+    public String getImagemURL() {
+        return imagemURL;
     }
 
-    public void setTipo(TipoUsuario tipo) {
-        this.tipo = tipo;
+    public void setImagemURL(String imagemURL) {
+        this.imagemURL = imagemURL;
     }
 }
