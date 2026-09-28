@@ -5,6 +5,7 @@
 package br.com.ifba.usuario.view;
 
 import br.com.ifba.usuario.entity.Usuario;
+import br.com.ifba.usuario.interfaces.Autenticavel;
 
 public class ViewLogin extends javax.swing.JFrame {
     

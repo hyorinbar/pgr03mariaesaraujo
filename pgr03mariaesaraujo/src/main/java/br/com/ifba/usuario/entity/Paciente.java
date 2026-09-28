@@ -25,4 +25,9 @@ public class Paciente extends Usuario {
     public String getTipo() {
     return "Paciente";
     }
+    
+    @Override
+    public boolean autenticar(String login, String senha) {
+       return super.autenticar(login, senha);
+    }
 }
