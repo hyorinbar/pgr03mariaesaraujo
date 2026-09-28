@@ -10,4 +10,5 @@ package br.com.ifba.usuario.interfaces;
  */
 public interface Autenticavel {
     boolean autenticar (String nome, String senha);
+    boolean realizarLogin(Autenticavel usuario, String login, String senha);
 }
