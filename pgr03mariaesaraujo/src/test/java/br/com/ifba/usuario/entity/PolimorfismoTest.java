@@ -1,3 +1,5 @@
+package br.com.ifba.usuario.entity;
+
 import br.com.ifba.usuario.entity.Usuario;
 import br.com.ifba.usuario.interfaces.Autenticavel;
 import org.junit.jupiter.api.Test;
@@ -7,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PolimorfismoTest {
 
     @Test
-    public void testePaciente() {
+    public void testeAutenticacaodePacientePaciente() {
         Autenticavel paciente = new Usuario(
             "paciente",
             "11111111111",
@@ -24,7 +26,7 @@ public class PolimorfismoTest {
     }
 
     @Test
-    public void testePsicologo() {
+    public void testeAutenticacaodePsicologo() {
         Autenticavel psicologo = new Usuario(
             "psicologo",
             "22222222222",
