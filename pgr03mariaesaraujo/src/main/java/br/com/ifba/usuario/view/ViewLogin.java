@@ -6,6 +6,8 @@ package br.com.ifba.usuario.view;
 
 import br.com.ifba.usuario.entity.Usuario;
 import br.com.ifba.usuario.interfaces.Autenticavel;
+import br.com.ifba.usuario.entity.Paciente; 
+import br.com.ifba.usuario.entity.Psicologo;
 
 public class ViewLogin extends javax.swing.JFrame {
     
@@ -171,6 +173,30 @@ public class ViewLogin extends javax.swing.JFrame {
                 error.ERROR_MESSAGE
             );
         }
+        
+    Paciente paciente = new Paciente(
+            "dudasodre",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "duda4321"
+    );
+
+    Psicologo psicologo = new Psicologo(
+            "dudasodre",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "duda4321",
+            "CRP123"
+    );
+    
+    paciente.realizarLogin(paciente, "dudasodre", "duda4321");
+    psicologo.realizarLogin(psicologo, "dudasodre", "duda4321");
     }//GEN-LAST:event_entrarActionPerformed
 
     private void lblCadastrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCadastrarMouseClicked

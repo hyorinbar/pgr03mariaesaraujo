@@ -24,6 +24,10 @@ public class Usuario implements Autenticavel {
     public boolean autenticar(String login, String senha) {
         return this.login.equals(login) && this.senha.equals(senha);
     }
+    
+    public boolean realizarLogin(Autenticavel usuario, String login, String senha) {
+        return usuario.autenticar(login, senha);
+    }
 
     public Usuario() {
         this.perfis = new ArrayList<>();
