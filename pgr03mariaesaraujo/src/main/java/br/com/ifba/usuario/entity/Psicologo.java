@@ -37,4 +37,9 @@ public class Psicologo extends Usuario {
     public String getTipo() {
     return "Psicologo";
     }
+    
+    @Override
+    public boolean autenticar(String login, String senha) {
+        return super.autenticar(login, senha);
+    }
 }
