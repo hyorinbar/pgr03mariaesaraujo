@@ -1,5 +1,5 @@
 
-package br.com.ifba.usuario.repository;
+package br.com.ifba.usuario.repositorio;
 
 import br.com.ifba.usuario.entity.Usuario;
 import java.util.ArrayList;

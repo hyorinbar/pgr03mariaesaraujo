@@ -2,7 +2,7 @@
 package br.com.ifba.pgr03mariaesaraujo;
 
 import br.com.ifba.usuario.entity.Usuario;
-import br.com.ifba.usuario.repository.RepositorioUsuarioEmMemoria;
+import br.com.ifba.usuario.repositorio.RepositorioUsuarioEmMemoria;
 import java.util.ArrayList;
 import java.util.List;
 

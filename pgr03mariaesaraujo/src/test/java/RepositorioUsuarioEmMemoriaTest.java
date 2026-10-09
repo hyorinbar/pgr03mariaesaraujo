@@ -1,5 +1,5 @@
 import br.com.ifba.usuario.entity.Usuario;
-import br.com.ifba.usuario.repository.RepositorioUsuarioEmMemoria;
+import br.com.ifba.usuario.repositorio.RepositorioUsuarioEmMemoria;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
