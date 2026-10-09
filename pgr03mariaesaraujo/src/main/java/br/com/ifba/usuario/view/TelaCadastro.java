@@ -5,6 +5,7 @@
 package br.com.ifba.usuario.view;
 
 import br.com.ifba.usuario.validar.ValidadorUsuario;
+import br.com.ifba.usuario.repositorio.RepositorioUsuarioEmMemoria;
 import br.com.ifba.usuario.entity.Usuario;
 import java.awt.Color;
 import java.time.LocalDateTime;
@@ -14,7 +15,7 @@ import javax.swing.border.Border;
 import java.util.Arrays;
 
 public class TelaCadastro extends javax.swing.JFrame {
-    
+    private final RepositorioUsuarioEmMemoria repositorio = new RepositorioUsuarioEmMemoria();
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaCadastro.class.getName());
 
     /**
@@ -320,6 +321,9 @@ public class TelaCadastro extends javax.swing.JFrame {
                 email,
                 senha
         );
+
+        // Cadastro do usuário no repositório
+        repositorio.cadastrar(usuario);
 
         JOptionPane.showMessageDialog(
                 this,
