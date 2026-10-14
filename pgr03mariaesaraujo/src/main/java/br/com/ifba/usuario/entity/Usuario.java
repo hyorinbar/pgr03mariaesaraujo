@@ -5,22 +5,43 @@
 package br.com.ifba.usuario.entity;
 
 import br.com.ifba.usuario.interfaces.Autenticavel;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import java.util.Objects;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Usuario implements Autenticavel {
 
+    @Column(name = "login", nullable = false)
     private String login;
+    
+    @Id
+    @Column(name = "cpf", nullable = false)
     private String cpf;
+    
+    @Column(name = "genero", nullable = false)
     private String genero;
+    
+    @Column(name = "data_nascimento", nullable = false)
     private String dataNascimento;
+    
+    @Column(name = "telefone")
     private String tel;
+    
+    @Column(name = "email", nullable = false)
     private String email;
+    
+    @Column(name = "senha", nullable = false)
     private String senha;
-    private List<Perfil> perfis;
-    private List<Vinculo> vinculos;
+    
+    //private List<Perfil> perfis;
+    //private List<Vinculo> vinculos;
 
     public boolean autenticar(String login, String senha) {
         return this.login.equals(login) && this.senha.equals(senha);
@@ -52,8 +73,8 @@ public class Usuario implements Autenticavel {
     }
 
     public Usuario() {
-        this.perfis = new ArrayList<>();
-        this.vinculos = new ArrayList<>();
+    //    this.perfis = new ArrayList<>();
+    //    this.vinculos = new ArrayList<>();
     }
 
     public Usuario(String login, String cpf, String genero, String dataNascimento,
@@ -66,8 +87,8 @@ public class Usuario implements Autenticavel {
         this.tel = tel;
         this.email = email;
         this.senha = senha;
-        this.perfis = new ArrayList<>();
-        this.vinculos = new ArrayList<>();
+    //    this.perfis = new ArrayList<>();
+    //    this.vinculos = new ArrayList<>();
     }
 
     public Usuario(String login, String cpf, String genero, String dataNascimento,
@@ -81,8 +102,8 @@ public class Usuario implements Autenticavel {
         this.tel = tel;
         this.email = email;
         this.senha = senha;
-        this.perfis = perfis;
-        this.vinculos = vinculos;
+    //    this.perfis = perfis;
+    //    this.vinculos = vinculos;
     }
     
     public String getTipo() {
@@ -145,7 +166,7 @@ public class Usuario implements Autenticavel {
         this.senha = senha;
     }
 
-    public List<Perfil> getPerfis() {
+/*    public List<Perfil> getPerfis() {
         return perfis;
     }
 
@@ -167,5 +188,5 @@ public class Usuario implements Autenticavel {
 
     public void adicionarVinculo(Vinculo vinculo) {
         vinculos.add(vinculo);
-    }
+    }*/
 }

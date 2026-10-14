@@ -6,3 +6,7 @@ você consegue ver algo que provavelmente seu colega não viu ou esqueceu, justa
 por mexer no mesmo código todos os dias. As vezes coisas bestas como identação de
 código, ou coisas mais importantes como validação de usuario ou até mesmo uma classe
 que está sem atributos. O mesmo serve para quem lê o seu código.
+
+Na tela de listagem, atributos sensíveis, como senha, não devem ser exibidos. Outros 
+dados pessoais, como CPF, também podem ser omitidos ou mascarados quando não forem 
+necessários.
