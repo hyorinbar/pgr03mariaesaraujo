@@ -8,7 +8,7 @@
 
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <!-- <class>br.com.ifba.usuario.entity.Produto</class> -->
+        <!-- <class>br.com.ifba.usuario.entity.Usuario</class> -->
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver"
