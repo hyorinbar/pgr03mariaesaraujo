@@ -13,6 +13,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import java.util.Arrays;
+import br.com.ifba.infrastructure.util.JPAUtil;
+import jakarta.persistence.EntityManager;
+import java.awt.HeadlessException;
 
 public class TelaCadastro extends javax.swing.JFrame {
     private final RepositorioUsuarioEmMemoria repositorio = new RepositorioUsuarioEmMemoria();
@@ -323,14 +326,37 @@ public class TelaCadastro extends javax.swing.JFrame {
         );
 
         // Cadastro do usuário no repositório
-        repositorio.cadastrar(usuario);
+        EntityManager em = JPAUtil.getEntityManager();
 
-        JOptionPane.showMessageDialog(
-                this,
-                "Usuário " + usuario.getLogin() + " cadastrado com sucesso!",
-                "Sucesso",
-                JOptionPane.INFORMATION_MESSAGE
-        );
+        try {
+            em.getTransaction().begin();
+
+            em.persist(usuario);
+
+            em.getTransaction().commit();
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Usuário " + usuario.getLogin() + " cadastrado com sucesso!",
+                    "Sucesso",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+        } catch (HeadlessException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Erro ao cadastrar usuário: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+
+        } finally {
+            em.close();
+        }
     }//GEN-LAST:event_criarContaActionPerformed
 
     private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
