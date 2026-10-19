@@ -1,48 +1,68 @@
 
 package br.com.ifba.usuario.repositorio;
 
+import br.com.ifba.infrastructure.util.JPAUtil;
 import br.com.ifba.usuario.entity.Usuario;
 import br.com.ifba.usuario.exception.UsuarioNaoEncontradoException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import jakarta.persistence.EntityManager;
 import java.util.List;
-import java.util.Map;
 
 public class RepositorioUsuarioEmMemoria {
 
-    private final List<Usuario> usuarios = new ArrayList<>();
-
-    private final Map<String, Usuario> porLogin = new HashMap<>();
-
     public void cadastrar(Usuario usuario) {
-        usuarios.add(usuario);
-        porLogin.put(usuario.getLogin(), usuario);
+        EntityManager em = JPAUtil.getEntityManager();
+
+        try {
+            em.getTransaction().begin();
+            em.persist(usuario);
+            em.getTransaction().commit();
+        } catch (RuntimeException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
     public List<Usuario> listarTodos() {
-        return new ArrayList<>(usuarios);
+        EntityManager em = JPAUtil.getEntityManager();
+
+        try {
+            return em.createQuery(
+                    "SELECT u FROM Usuario u",
+                    Usuario.class
+            ).getResultList();
+        } finally {
+            em.close();
+        }
     }
 
-    // Busca percorrendo a lista
+    // Busca por login usando o banco de dados
     public Usuario buscarPorLoginLinear(String login) {
-        for (Usuario usuario : usuarios) {
-            if (login.equals(usuario.getLogin())) {
-                return usuario;
+        EntityManager em = JPAUtil.getEntityManager();
+
+        try {
+            List<Usuario> usuarios = em.createQuery(
+                    "SELECT u FROM Usuario u WHERE u.login = :login",
+                    Usuario.class
+            )
+            .setParameter("login", login)
+            .getResultList();
+
+            if (usuarios.isEmpty()) {
+                throw new UsuarioNaoEncontradoException(login);
             }
-        }
 
-        return null;
+            return usuarios.get(0);
+        } finally {
+            em.close();
+        }
     }
 
-    // Busca usando o Map
+    // Busca por login usando o banco de dados
     public Usuario buscarPorLogin(String login) {
-        Usuario usuario = porLogin.get(login);
-
-        if (usuario == null) {
-            throw new UsuarioNaoEncontradoException(login);
-        }
-
-        return usuario;
+        return buscarPorLoginLinear(login);
     }
-
 }
