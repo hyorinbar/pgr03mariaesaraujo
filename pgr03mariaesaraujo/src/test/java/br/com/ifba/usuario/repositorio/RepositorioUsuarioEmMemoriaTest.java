@@ -1,4 +1,7 @@
+package br.com.ifba.usuario.repositorio;
+
 import br.com.ifba.usuario.entity.Usuario;
+import br.com.ifba.usuario.exception.UsuarioNaoEncontradoException;
 import br.com.ifba.usuario.repositorio.RepositorioUsuarioEmMemoria;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -38,16 +41,21 @@ class RepositorioUsuarioEmMemoriaTest {
         assertSame(usuario2, repositorio.buscarPorLogin("maria"));
     }
 
+    
     @Test
-    void deveRetornarNullQuandoLoginNaoExiste() {
-        RepositorioUsuarioEmMemoria repositorio = new RepositorioUsuarioEmMemoria();
+    void deveLancarExcecaoQuandoLoginNaoExiste() {
+        RepositorioUsuarioEmMemoria repositorio =
+                new RepositorioUsuarioEmMemoria();
 
         repositorio.cadastrar(
             criarUsuario("joao", "11122233344")
         );
 
-        assertNull(repositorio.buscarPorLogin("pedro"));
+        UsuarioNaoEncontradoException excecao = assertThrows(UsuarioNaoEncontradoException.class,() -> repositorio.buscarPorLogin("pedro"));
+
+        assertTrue(excecao.getMessage().contains("pedro"));
     }
+
 
     @Test
     void usuariosComMesmoLoginDevemSerIguais() {

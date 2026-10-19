@@ -2,6 +2,7 @@
 package br.com.ifba.usuario.repositorio;
 
 import br.com.ifba.usuario.entity.Usuario;
+import br.com.ifba.usuario.exception.UsuarioNaoEncontradoException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,13 @@ public class RepositorioUsuarioEmMemoria {
 
     // Busca usando o Map
     public Usuario buscarPorLogin(String login) {
-        return porLogin.get(login);
+        Usuario usuario = porLogin.get(login);
+
+        if (usuario == null) {
+            throw new UsuarioNaoEncontradoException(login);
+        }
+
+        return usuario;
     }
+
 }
