@@ -1,9 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package br.com.ifba.usuario.view;
 
+import br.com.ifba.usuario.entity.Usuario;
 import java.awt.Component;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JButton;
@@ -12,6 +10,11 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import br.com.ifba.usuario.exception.UsuarioNaoEncontradoException;
+import br.com.ifba.usuario.repositorio.RepositorioUsuarioEmMemoria;
+import br.com.ifba.infrastructure.util.JPAUtil;
+import jakarta.persistence.EntityManager;
+import java.util.List;
 
 /**
  *
@@ -24,24 +27,55 @@ public class TelaUsuarios extends javax.swing.JFrame {
     /**
      * Creates new form TelaUsuarios
      */
-    public TelaUsuarios() {
-        initComponents();
 
-        configurarBotoesTabela();
+        public TelaUsuarios() {
+            initComponents();
+            
+            DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
 
-        DefaultTableModel modelo =
-            (DefaultTableModel) tblUsuarios.getModel();
+            modelo.setColumnIdentifiers(new Object[]{
+                "Login", "Email", "Data de Nascimento", "Remover", "Editar"
+            });
 
-        modelo.setRowCount(0); // Remove as linhas vazias iniciais
+            configurarBotoesTabela();
 
-        modelo.addRow(new Object[]{
-            "Maria123", "Maria", "10/05/2005", "Remover", "Editar"
-        });
+            carregarUsuarios();
+        }
+        
+        private void carregarUsuarios() {
+            DefaultTableModel modelo
+                    = (DefaultTableModel) tblUsuarios.getModel();
 
-        modelo.addRow(new Object[]{
-            "João123", "João", "20/08/2004", "Remover", "Editar"
-        });
-    }
+            modelo.setRowCount(0);
+
+            EntityManager em = JPAUtil.getEntityManager();
+
+            try {
+                List<Usuario> usuarios = em.createQuery("SELECT u FROM Usuario u", Usuario.class).getResultList();
+
+                for (Usuario usuario : usuarios) {
+                    modelo.addRow(new Object[]{
+                        usuario.getLogin(),
+                        usuario.getEmail(),
+                        usuario.getDataNascimento(),
+                        "Remover",
+                        "Editar"
+                    });
+                }
+
+            } catch (RuntimeException e) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Erro ao carregar usuários: " + e.getMessage(),
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE
+                );
+
+            } finally {
+                em.close();
+            }
+        }
+
         private void configurarBotoesTabela() {
 
             // Coluna 3: Remover
@@ -58,6 +92,8 @@ public class TelaUsuarios extends javax.swing.JFrame {
             tblUsuarios.getColumnModel().getColumn(4)
                 .setCellEditor(new BotaoEditor(tblUsuarios, "Editar"));
         }
+        
+    private final RepositorioUsuarioEmMemoria repositorioUsuarioEmMemoria = new RepositorioUsuarioEmMemoria();
     
 
     /**
@@ -72,8 +108,9 @@ public class TelaUsuarios extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsuarios = new javax.swing.JTable();
-        jTextField2 = new javax.swing.JTextField();
+        txtBuscar = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -100,14 +137,18 @@ public class TelaUsuarios extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblUsuarios);
 
-        jTextField2.setBackground(new java.awt.Color(187, 233, 250));
-        jTextField2.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
-        jTextField2.setText("Procurar");
-        jTextField2.addActionListener(this::jTextField2ActionPerformed);
+        txtBuscar.setBackground(new java.awt.Color(187, 233, 250));
+        txtBuscar.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
+        txtBuscar.setText("Procurar");
+        txtBuscar.addActionListener(this::txtBuscarActionPerformed);
 
         jButton1.setBackground(new java.awt.Color(187, 233, 250));
         jButton1.setText("+");
         jButton1.addActionListener(this::jButton1ActionPerformed);
+
+        btnBuscar.setBackground(new java.awt.Color(187, 233, 250));
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -118,7 +159,9 @@ public class TelaUsuarios extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 753, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBuscar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(87, Short.MAX_VALUE))
@@ -128,8 +171,9 @@ public class TelaUsuarios extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(37, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar))
                 .addGap(24, 24, 24)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
@@ -152,14 +196,51 @@ public class TelaUsuarios extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         TelaCadastro telaCadastro = new TelaCadastro();
         telaCadastro.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String login = txtBuscar.getText().trim();
+
+        if (login.isEmpty() || login.equals("Procurar")) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Digite o login do usuário.",
+                "Aviso",
+                JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        try {
+            Usuario usuario =
+                    repositorioUsuarioEmMemoria.buscarPorLogin(login);
+
+            JOptionPane.showMessageDialog(
+                this,
+                "Usuário encontrado!\n"
+                + "Login: " + usuario.getLogin() + "\n"
+                + "CPF: " + usuario.getCpf() + "\n"
+                + "E-mail: " + usuario.getEmail(),
+                "Resultado da busca",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+
+        } catch (UsuarioNaoEncontradoException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                e.getMessage(),
+                "Usuário não encontrado",
+                JOptionPane.WARNING_MESSAGE
+            );
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -187,11 +268,12 @@ public class TelaUsuarios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTable tblUsuarios;
+    private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }
 
