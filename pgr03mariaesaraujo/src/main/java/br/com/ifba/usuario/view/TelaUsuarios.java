@@ -149,7 +149,10 @@ public class TelaUsuarios extends javax.swing.JFrame {
 
                             Usuario usuario = em.find(Usuario.class, cpf);
 
-                            if (usuario != null) {
+                                if (usuario == null) {
+                                    throw new UsuarioNaoEncontradoException(cpf);
+                                }
+
                                 em.remove(usuario);
                                 em.getTransaction().commit();
 
@@ -160,16 +163,6 @@ public class TelaUsuarios extends javax.swing.JFrame {
                                         tabela,
                                         "Usuário removido com sucesso!"
                                 );
-                            } else {
-                                em.getTransaction().rollback();
-
-                                JOptionPane.showMessageDialog(
-                                        tabela,
-                                        "Usuário não encontrado no banco de dados.",
-                                        "Aviso",
-                                        JOptionPane.WARNING_MESSAGE
-                                );
-                            }
 
                         } catch (RuntimeException ex) {
                             if (em.getTransaction().isActive()) {
@@ -334,27 +327,49 @@ public class TelaUsuarios extends javax.swing.JFrame {
             return;
         }
 
+        EntityManager em = JPAUtil.getEntityManager();
+
         try {
-            Usuario usuario =
-                    repositorioUsuarioEmMemoria.buscarPorLogin(login);
+            List<Usuario> usuariosEncontrados = em.createQuery(
+                    "SELECT u FROM Usuario u WHERE u.login = :login",
+                    Usuario.class
+            )
+                    .setParameter("login", login)
+                    .getResultList();
 
+            DefaultTableModel modelo
+                    = (DefaultTableModel) tblUsuarios.getModel();
+
+            modelo.setRowCount(0);
+
+            if (usuariosEncontrados.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Nenhum usuário encontrado."
+                );
+                return;
+            }
+
+            for (Usuario usuario : usuariosEncontrados) {
+                modelo.addRow(new Object[]{
+                    usuario.getLogin(),
+                    usuario.getCpf(),
+                    usuario.getDataNascimento(),
+                    "Remover",
+                    "Editar"
+                });
+            }
+
+        } catch (RuntimeException e) {
             JOptionPane.showMessageDialog(
-                this,
-                "Usuário encontrado!\n"
-                + "Login: " + usuario.getLogin() + "\n"
-                + "CPF: " + usuario.getCpf() + "\n"
-                + "E-mail: " + usuario.getEmail(),
-                "Resultado da busca",
-                JOptionPane.INFORMATION_MESSAGE
+                    this,
+                    "Erro ao buscar usuário: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
             );
 
-        } catch (UsuarioNaoEncontradoException e) {
-            JOptionPane.showMessageDialog(
-                this,
-                e.getMessage(),
-                "Usuário não encontrado",
-                JOptionPane.WARNING_MESSAGE
-            );
+        } finally {
+            em.close();
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 

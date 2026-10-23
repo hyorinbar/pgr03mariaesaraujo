@@ -342,7 +342,7 @@ public class TelaCadastro extends javax.swing.JFrame {
                     JOptionPane.INFORMATION_MESSAGE
             );
 
-        } catch (HeadlessException e) {
+        } catch (RuntimeException e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }

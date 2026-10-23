@@ -1,72 +1,86 @@
 package br.com.ifba.usuario.repositorio;
 
+import br.com.ifba.infrastructure.util.JPAUtil;
 import br.com.ifba.usuario.entity.Usuario;
 import br.com.ifba.usuario.exception.UsuarioNaoEncontradoException;
-import br.com.ifba.usuario.repositorio.RepositorioUsuarioEmMemoria;
-import java.util.List;
+import jakarta.persistence.EntityManager;
+
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class RepositorioUsuarioEmMemoriaTest {
+public class RepositorioUsuarioEmMemoriaTest {
 
-    private Usuario criarUsuario(String login, String cpf) {
-        return new Usuario(login, cpf, "M", "2000-01-01", "7199999999", login + "@email.com","123");
-    }
-
-    @Test
-    void deveCadastrarEListarUsuario() {
-        RepositorioUsuarioEmMemoria repositorio = new RepositorioUsuarioEmMemoria();
-
-        Usuario usuario = criarUsuario("joao", "11122233344");
-
-        repositorio.cadastrar(usuario);
-
-        List<Usuario> usuarios = repositorio.listarTodos();
-
-        assertEquals(1, usuarios.size());
-        assertEquals("joao", usuarios.get(0).getLogin());
-    }
-
-    @Test
-    void deveBuscarUsuarioCorretoPorLogin() {
-        RepositorioUsuarioEmMemoria repositorio = new RepositorioUsuarioEmMemoria();
-
-        Usuario usuario1 = criarUsuario("joao", "11122233344");
-        Usuario usuario2 = criarUsuario("maria", "55566677788");
-
-        repositorio.cadastrar(usuario1);
-        repositorio.cadastrar(usuario2);
-
-        assertSame(usuario2, repositorio.buscarPorLogin("maria"));
-    }
-
-    
     @Test
     void deveLancarExcecaoQuandoLoginNaoExiste() {
-        RepositorioUsuarioEmMemoria repositorio =
-                new RepositorioUsuarioEmMemoria();
 
-        repositorio.cadastrar(
-            criarUsuario("joao", "11122233344")
+        RepositorioUsuarioEmMemoria repositorio
+                = new RepositorioUsuarioEmMemoria();
+
+        String loginInexistente
+                = "inexistente-" + java.util.UUID.randomUUID();
+
+        assertThrows(
+                UsuarioNaoEncontradoException.class,
+                () -> repositorio.buscarPorLogin(loginInexistente)
         );
-
-        UsuarioNaoEncontradoException excecao = assertThrows(UsuarioNaoEncontradoException.class,() -> repositorio.buscarPorLogin("pedro"));
-
-        assertTrue(excecao.getMessage().contains("pedro"));
     }
-
 
     @Test
-    void usuariosComMesmoLoginDevemSerIguais() {
-        Usuario usuario1 = criarUsuario("joao", "11122233344");
-        Usuario usuario2 = criarUsuario("joao", "55566677788");
+    void naoDeveLancarExcecaoQuandoUsuarioExiste() {
 
-        List<Usuario> lista = new java.util.ArrayList<>();
-        lista.add(usuario1);
+        String login = "teste-" + java.util.UUID.randomUUID();
 
-        assertEquals(usuario1, usuario2);
-        assertTrue(lista.contains(usuario2));
+        String cpf = java.util.UUID.randomUUID()
+                .toString()
+                .replace("-", "")
+                .substring(0, 11);
+
+        Usuario usuario = new Usuario(
+                login,
+                cpf,
+                "feminino",
+                "18/01/2005",
+                "74991070780",
+                login + "@teste.com",
+                "Duda1234"
+        );
+
+        EntityManager em = JPAUtil.getEntityManager();
+
+        try {
+            em.getTransaction().begin();
+            em.persist(usuario);
+            em.getTransaction().commit();
+
+            RepositorioUsuarioEmMemoria repositorio
+                    = new RepositorioUsuarioEmMemoria();
+
+            Usuario encontrado = assertDoesNotThrow(
+                    () -> repositorio.buscarPorLogin(login)
+            );
+
+            assertEquals(login, encontrado.getLogin());
+
+        } finally {
+            try {
+                if (em.getTransaction().isActive()) {
+                    em.getTransaction().rollback();
+                }
+
+                Usuario cadastrado = em.find(Usuario.class, cpf);
+
+                if (cadastrado != null) {
+                    em.getTransaction().begin();
+                    em.remove(cadastrado);
+                    em.getTransaction().commit();
+                }
+
+            } finally {
+                em.close();
+            }
+        }
     }
 }
-

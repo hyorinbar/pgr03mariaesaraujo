@@ -243,6 +243,8 @@ public class TelaEditarUsuario extends javax.swing.JFrame {
             usuario.setTel(telefone);
             usuario.setGenero(genero);
 
+            em.merge(usuario);
+
             em.getTransaction().commit();
 
             JOptionPane.showMessageDialog(
