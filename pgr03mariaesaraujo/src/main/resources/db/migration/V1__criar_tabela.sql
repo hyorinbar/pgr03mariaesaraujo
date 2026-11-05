@@ -15,6 +15,6 @@ CREATE TABLE usuario (
     login varchar (255) NOT NULL,
     senha varchar (255) NOT NULL,
     telefone varchar (255),
-    CONSTRAINT pk_cpf PRIMARY KEY (cpf),
-)
+    CONSTRAINT pk_cpf PRIMARY KEY (cpf)
+);
 
