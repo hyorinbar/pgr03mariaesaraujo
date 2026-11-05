@@ -21,6 +21,8 @@ public class Usuario implements Autenticavel {
     @Column(name = "login", nullable = false)
     private String login;
     
+    private String nome;
+    
     @Id
     @Column(name = "cpf", nullable = false)
     private String cpf;
