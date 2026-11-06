@@ -11,14 +11,13 @@ import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import java.util.Arrays;
-import br.com.ifba.infrastructure.util.JPAUtil;
-import br.com.ifba.usuario.repositorio.RepositorioUsuarioEmMemoria;
-import jakarta.persistence.EntityManager;
 import java.awt.HeadlessException;
+import br.com.ifba.usuario.dao.UsuarioDao;
+import br.com.ifba.usuario.dao.UsuarioIDao;
 
 
 public class TelaEditarUsuario extends javax.swing.JFrame {
-    private final RepositorioUsuarioEmMemoria repositorio = new RepositorioUsuarioEmMemoria();
+    private final UsuarioIDao usuarioDao = new UsuarioDao();
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaEditarUsuario.class.getName());
     private String cpfUsuario;
 
@@ -41,10 +40,9 @@ public class TelaEditarUsuario extends javax.swing.JFrame {
     }
 
     private void carregarDadosUsuario() {
-        EntityManager em = JPAUtil.getEntityManager();
-
+        
         try {
-            Usuario usuario = em.find(Usuario.class, cpfUsuario);
+            Usuario usuario = usuarioDao.findById(cpfUsuario);
 
             if (usuario == null) {
                 JOptionPane.showMessageDialog(
@@ -70,8 +68,6 @@ public class TelaEditarUsuario extends javax.swing.JFrame {
                     "Erro",
                     JOptionPane.ERROR_MESSAGE
             );
-        } finally {
-            em.close();
         }
     }    
 
@@ -219,16 +215,10 @@ public class TelaEditarUsuario extends javax.swing.JFrame {
             return;
         }
 
-        EntityManager em = JPAUtil.getEntityManager();
-
         try {
-            em.getTransaction().begin();
-
-            Usuario usuario = em.find(Usuario.class, cpfUsuario);
+            Usuario usuario = usuarioDao.findById(cpfUsuario);
 
             if (usuario == null) {
-                em.getTransaction().rollback();
-
                 JOptionPane.showMessageDialog(
                         this,
                         "Usuário não encontrado.",
@@ -243,9 +233,7 @@ public class TelaEditarUsuario extends javax.swing.JFrame {
             usuario.setTel(telefone);
             usuario.setGenero(genero);
 
-            em.merge(usuario);
-
-            em.getTransaction().commit();
+            usuarioDao.update(usuario);
 
             JOptionPane.showMessageDialog(
                     this,
@@ -257,18 +245,12 @@ public class TelaEditarUsuario extends javax.swing.JFrame {
             dispose();
 
         } catch (RuntimeException e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-
             JOptionPane.showMessageDialog(
                     this,
                     "Erro ao atualizar usuário: " + e.getMessage(),
                     "Erro",
                     JOptionPane.ERROR_MESSAGE
             );
-        } finally {
-            em.close();
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 

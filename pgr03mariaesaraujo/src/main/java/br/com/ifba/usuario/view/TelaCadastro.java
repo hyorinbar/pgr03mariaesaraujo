@@ -5,7 +5,6 @@
 package br.com.ifba.usuario.view;
 
 import br.com.ifba.usuario.validar.ValidadorUsuario;
-import br.com.ifba.usuario.repositorio.RepositorioUsuarioEmMemoria;
 import br.com.ifba.usuario.entity.Usuario;
 import java.awt.Color;
 import java.time.LocalDateTime;
@@ -13,12 +12,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import java.util.Arrays;
-import br.com.ifba.infrastructure.util.JPAUtil;
-import jakarta.persistence.EntityManager;
 import java.awt.HeadlessException;
+import br.com.ifba.usuario.dao.UsuarioDao;
+import br.com.ifba.usuario.dao.UsuarioIDao;
 
 public class TelaCadastro extends javax.swing.JFrame {
-    private final RepositorioUsuarioEmMemoria repositorio = new RepositorioUsuarioEmMemoria();
+    private final UsuarioIDao usuarioDao = new UsuarioDao();
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaCadastro.class.getName());
 
     /**
@@ -326,14 +325,8 @@ public class TelaCadastro extends javax.swing.JFrame {
         );
 
         // Cadastro do usuário no repositório
-        EntityManager em = JPAUtil.getEntityManager();
-
         try {
-            em.getTransaction().begin();
-
-            em.persist(usuario);
-
-            em.getTransaction().commit();
+            usuarioDao.save(usuario);
 
             JOptionPane.showMessageDialog(
                     this,
@@ -343,9 +336,6 @@ public class TelaCadastro extends javax.swing.JFrame {
             );
 
         } catch (RuntimeException e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
 
             JOptionPane.showMessageDialog(
                     this,
@@ -353,9 +343,6 @@ public class TelaCadastro extends javax.swing.JFrame {
                     "Erro",
                     JOptionPane.ERROR_MESSAGE
             );
-
-        } finally {
-            em.close();
         }
     }//GEN-LAST:event_criarContaActionPerformed
 
