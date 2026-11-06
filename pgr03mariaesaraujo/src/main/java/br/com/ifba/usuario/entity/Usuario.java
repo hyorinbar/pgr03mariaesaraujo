@@ -1,9 +1,7 @@
- /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package br.com.ifba.usuario.entity;
 
+import br.com.ifba.infrastructure.entity.PersistenceEntity;
 import br.com.ifba.usuario.interfaces.Autenticavel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,16 +14,12 @@ import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Usuario implements Autenticavel {
+public class Usuario extends PersistenceEntity implements Autenticavel {
 
     @Column(name = "login", nullable = false)
     private String login;
     
     private String nome;
-    
-    @Id
-    @Column(name = "cpf", nullable = false)
-    private String cpf;
     
     @Column(name = "genero", nullable = false)
     private String genero;
@@ -118,14 +112,6 @@ public class Usuario implements Autenticavel {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
     }
 
     public String getGenero() {
