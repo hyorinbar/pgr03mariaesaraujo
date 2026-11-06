@@ -11,17 +11,16 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import br.com.ifba.usuario.exception.UsuarioNaoEncontradoException;
-import br.com.ifba.usuario.repositorio.RepositorioUsuarioEmMemoria;
-import br.com.ifba.infrastructure.util.JPAUtil;
-import jakarta.persistence.EntityManager;
 import java.util.List;
+import br.com.ifba.usuario.dao.UsuarioDao;
+import br.com.ifba.usuario.dao.UsuarioIDao;
 
 /**
  *
  * @author guest
  */
 public class TelaUsuarios extends javax.swing.JFrame {
-    
+    private final UsuarioIDao usuarioDao = new UsuarioDao();
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaUsuarios.class.getName());
 
     /**
@@ -44,15 +43,14 @@ public class TelaUsuarios extends javax.swing.JFrame {
         }
         
         private void carregarUsuarios() {
+
             DefaultTableModel modelo
                     = (DefaultTableModel) tblUsuarios.getModel();
 
             modelo.setRowCount(0);
 
-            EntityManager em = JPAUtil.getEntityManager();
-
             try {
-                List<Usuario> usuarios = em.createQuery("SELECT u FROM Usuario u", Usuario.class).getResultList();
+                List<Usuario> usuarios = usuarioDao.findAll();
 
                 for (Usuario usuario : usuarios) {
                     modelo.addRow(new Object[]{
@@ -71,9 +69,6 @@ public class TelaUsuarios extends javax.swing.JFrame {
                         "Erro",
                         JOptionPane.ERROR_MESSAGE
                 );
-
-            } finally {
-                em.close();
             }
         }
 
@@ -94,7 +89,6 @@ public class TelaUsuarios extends javax.swing.JFrame {
                 .setCellEditor(new BotaoEditor(tblUsuarios, "Editar"));
         }
         
-    private final RepositorioUsuarioEmMemoria repositorioUsuarioEmMemoria = new RepositorioUsuarioEmMemoria();
     
     class BotaoRenderer extends JButton implements TableCellRenderer {
 
@@ -142,19 +136,13 @@ public class TelaUsuarios extends javax.swing.JFrame {
                         String cpf = tabela.getModel()
                                 .getValueAt(linhaModelo, 1).toString();
 
-                        EntityManager em = JPAUtil.getEntityManager();
-
-                        try {
-                            em.getTransaction().begin();
-
-                            Usuario usuario = em.find(Usuario.class, cpf);
+                        try {Usuario usuario = usuarioDao.findById(cpf);
 
                                 if (usuario == null) {
                                     throw new UsuarioNaoEncontradoException(cpf);
                                 }
 
-                                em.remove(usuario);
-                                em.getTransaction().commit();
+                                usuarioDao.delete(usuario);
 
                                 ((DefaultTableModel) tabela.getModel())
                                         .removeRow(linhaModelo);
@@ -164,22 +152,15 @@ public class TelaUsuarios extends javax.swing.JFrame {
                                         "Usuário removido com sucesso!"
                                 );
 
-                        } catch (RuntimeException ex) {
-                            if (em.getTransaction().isActive()) {
-                                em.getTransaction().rollback();
+                            } catch (RuntimeException ex) {
+                                JOptionPane.showMessageDialog(
+                                        tabela,
+                                        "Erro ao remover usuário: " + ex.getMessage(),
+                                        "Erro",
+                                        JOptionPane.ERROR_MESSAGE
+                                );
                             }
-
-                            JOptionPane.showMessageDialog(
-                                    tabela,
-                                    "Erro ao remover usuário: " + ex.getMessage(),
-                                    "Erro",
-                                    JOptionPane.ERROR_MESSAGE
-                            );
-
-                        } finally {
-                            em.close();
                         }
-                    }
 
                         }else if (acao.equals("Editar")) {
                             String cpf = tabela.getModel()
@@ -327,22 +308,14 @@ public class TelaUsuarios extends javax.swing.JFrame {
             return;
         }
 
-        EntityManager em = JPAUtil.getEntityManager();
-
         try {
-            List<Usuario> usuariosEncontrados = em.createQuery(
-                    "SELECT u FROM Usuario u WHERE u.login = :login",
-                    Usuario.class
-            )
-                    .setParameter("login", login)
-                    .getResultList();
+            Usuario usuarioEncontrado = usuarioDao.findByLogin(login);
 
-            DefaultTableModel modelo
-                    = (DefaultTableModel) tblUsuarios.getModel();
+            DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
 
             modelo.setRowCount(0);
 
-            if (usuariosEncontrados.isEmpty()) {
+            if (usuarioEncontrado == null) {
                 JOptionPane.showMessageDialog(
                         this,
                         "Nenhum usuário encontrado."
@@ -350,15 +323,13 @@ public class TelaUsuarios extends javax.swing.JFrame {
                 return;
             }
 
-            for (Usuario usuario : usuariosEncontrados) {
-                modelo.addRow(new Object[]{
-                    usuario.getLogin(),
-                    usuario.getCpf(),
-                    usuario.getDataNascimento(),
-                    "Remover",
-                    "Editar"
-                });
-            }
+            modelo.addRow(new Object[]{
+                usuarioEncontrado.getLogin(),
+                usuarioEncontrado.getCpf(),
+                usuarioEncontrado.getDataNascimento(),
+                "Remover",
+                "Editar"
+            });
 
         } catch (RuntimeException e) {
             JOptionPane.showMessageDialog(
@@ -367,9 +338,6 @@ public class TelaUsuarios extends javax.swing.JFrame {
                     "Erro",
                     JOptionPane.ERROR_MESSAGE
             );
-
-        } finally {
-            em.close();
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
