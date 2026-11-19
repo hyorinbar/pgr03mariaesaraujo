@@ -4,21 +4,27 @@
  */
 package br.com.ifba.usuario.view;
 
+import br.com.ifba.usuario.controller.UsuarioController;
+import br.com.ifba.usuario.controller.UsuarioIController;
+import br.com.ifba.usuario.dao.UsuarioDao;
+import br.com.ifba.usuario.dao.UsuarioIDao;
 import br.com.ifba.usuario.entity.Usuario;
 import br.com.ifba.usuario.interfaces.Autenticavel;
 import br.com.ifba.usuario.entity.Paciente; 
 import br.com.ifba.usuario.entity.Psicologo;
+import br.com.ifba.usuario.service.UsuarioIService;
+import br.com.ifba.usuario.service.UsuarioService;
 
 public class ViewLogin extends javax.swing.JFrame {
-    
+    private final UsuarioIController controller;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ViewLogin.class.getName());
 
     /**
      * Creates new form ViewLogin
      */
-    public ViewLogin() {
+    public ViewLogin(UsuarioIController controller) {
+        this.controller = controller;
         initComponents();
-        
     }
 
     /**
@@ -200,33 +206,18 @@ public class ViewLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_entrarActionPerformed
 
     private void lblCadastrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCadastrarMouseClicked
-        TelaCadastro telaCadastro = new TelaCadastro();
+        TelaCadastro telaCadastro = new TelaCadastro(controller);
         telaCadastro.setVisible(true);
     }//GEN-LAST:event_lblCadastrarMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        UsuarioIDao dao = new UsuarioDao();
+        UsuarioIService service = new UsuarioService(dao);
+        UsuarioIController controller = new UsuarioController(service);
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new ViewLogin().setVisible(true));
+        java.awt.EventQueue.invokeLater(()
+                -> new TelaUsuarios(controller).setVisible(true)
+        );
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

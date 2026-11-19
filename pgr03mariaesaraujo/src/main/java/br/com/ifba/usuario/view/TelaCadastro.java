@@ -4,8 +4,14 @@
  */
 package br.com.ifba.usuario.view;
 
+import br.com.ifba.usuario.controller.UsuarioController;
+import br.com.ifba.usuario.controller.UsuarioIController;
+import br.com.ifba.usuario.dao.UsuarioDao;
+import br.com.ifba.usuario.dao.UsuarioIDao;
 import br.com.ifba.usuario.validar.ValidadorUsuario;
 import br.com.ifba.usuario.entity.Usuario;
+import br.com.ifba.usuario.service.UsuarioIService;
+import br.com.ifba.usuario.service.UsuarioService;
 import java.awt.Color;
 import java.time.LocalDateTime;
 import javax.swing.BorderFactory;
@@ -13,19 +19,17 @@ import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import java.util.Arrays;
 import java.awt.HeadlessException;
-import br.com.ifba.usuario.dao.UsuarioDao;
-import br.com.ifba.usuario.dao.UsuarioIDao;
 
 public class TelaCadastro extends javax.swing.JFrame {
-    private final UsuarioIDao usuarioDao = new UsuarioDao();
+    private final UsuarioIController controller;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaCadastro.class.getName());
 
     /**
      * Creates new form ViewLogin
      */
-    public TelaCadastro() {
+    public TelaCadastro(UsuarioIController controller) {
+        this.controller = controller;
         initComponents();
-        
     }
 
     /**
@@ -240,68 +244,8 @@ public class TelaCadastro extends javax.swing.JFrame {
         String senha = new String(txtSenha.getPassword());
         String confirmarSenha = new String(txtConfirmarSenha.getPassword());
 
-        // Verificação de campos vazios
-        if (!ValidadorUsuario.camposPreenchidos(
-                nome,
-                cpf,
-                dataNascimento,
-                telefone,
-                email,
-                senha,
-                confirmarSenha)) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Preencha todos os campos.",
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE
-            );
-
-            return;
-        }
-
-        // Verificação de palavra proibida
-        if (ValidadorUsuario.contemPalavraProibida(nome)) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "O nome de usuário contém uma palavra proibida.",
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE
-            );
-
-            return;
-        }
-
-        // Verificação do CPF
-        if (!ValidadorUsuario.cpfValido(cpf)) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "CPF inválido.",
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE
-            );
-
-            return;
-        }
-
-        // Verificação da força da senha
-        if (!ValidadorUsuario.senhaForte(senha)) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "A senha deve possuir pelo menos 8 caracteres, "
-                    + "uma letra maiúscula, uma letra minúscula e um número.",
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE
-            );
-
-            return;
-        }
-
         // Verificação das senhas
-        if (!ValidadorUsuario.senhasConferem(senha, confirmarSenha)) {
+        if (!senha.equals(confirmarSenha)) {
 
             JOptionPane.showMessageDialog(
                     this,
@@ -324,9 +268,9 @@ public class TelaCadastro extends javax.swing.JFrame {
                 senha
         );
 
-        // Cadastro do usuário no repositório
+        // Cadastro através do Controller
         try {
-            usuarioDao.save(usuario);
+            controller.save(usuario);
 
             JOptionPane.showMessageDialog(
                     this,
@@ -337,7 +281,7 @@ public class TelaCadastro extends javax.swing.JFrame {
 
         } catch (RuntimeException e) {
 
-            JOptionPane.showMessageDialog(
+            JOptionPane.showMessageDialog( 
                     this,
                     "Erro ao cadastrar usuário: " + e.getMessage(),
                     "Erro",
@@ -374,29 +318,14 @@ public class TelaCadastro extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        UsuarioIDao dao = new UsuarioDao();
+        UsuarioIService service = new UsuarioService(dao);
+        UsuarioIController controller = new UsuarioController(service);
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new TelaCadastro().setVisible(true));
+        java.awt.EventQueue.invokeLater(()
+                -> new TelaUsuarios(controller).setVisible(true)
+        );
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
