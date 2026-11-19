@@ -4,8 +4,13 @@
  */
 package br.com.ifba.usuario.view;
 
+import br.com.ifba.usuario.controller.UsuarioController;
 import br.com.ifba.usuario.controller.UsuarioIController;
+import br.com.ifba.usuario.dao.UsuarioDao;
+import br.com.ifba.usuario.dao.UsuarioIDao;
 import br.com.ifba.usuario.entity.Usuario;
+import br.com.ifba.usuario.service.UsuarioIService;
+import br.com.ifba.usuario.service.UsuarioService;
 import java.awt.Color;
 import java.time.LocalDateTime;
 import javax.swing.BorderFactory;
@@ -265,9 +270,17 @@ public class TelaEditarUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    public static void main(String args[]) {
+
+        UsuarioIDao dao = new UsuarioDao();
+        UsuarioIService service = new UsuarioService(dao);
+        UsuarioIController controller = new UsuarioController(service);
+
+        java.awt.EventQueue.invokeLater(() -> {
+            TelaEditarUsuario tela = new TelaEditarUsuario("CPF_DO_USUARIO", controller);
+            tela.setVisible(true);
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxGenero;

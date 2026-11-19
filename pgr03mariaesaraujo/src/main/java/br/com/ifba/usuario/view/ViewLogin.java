@@ -210,6 +210,15 @@ public class ViewLogin extends javax.swing.JFrame {
         telaCadastro.setVisible(true);
     }//GEN-LAST:event_lblCadastrarMouseClicked
 
+    public static void main(String args[]) {
+        UsuarioIDao dao = new UsuarioDao();
+        UsuarioIService service = new UsuarioService(dao);
+        UsuarioIController controller = new UsuarioController(service);
+
+        java.awt.EventQueue.invokeLater(()
+                -> new ViewLogin(controller).setVisible(true)
+        );
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JOptionPane confirmar;

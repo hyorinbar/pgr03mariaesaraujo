@@ -356,7 +356,7 @@ public class TelaUsuarios extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(()
                 -> new TelaUsuarios(controller).setVisible(true)
         );
-    }    
+    } 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
