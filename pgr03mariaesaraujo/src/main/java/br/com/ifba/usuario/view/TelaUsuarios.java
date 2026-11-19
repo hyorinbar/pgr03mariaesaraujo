@@ -171,8 +171,8 @@ public class TelaUsuarios extends javax.swing.JFrame {
                         }else if (acao.equals("Editar")) {
                             String cpf = tabela.getModel()
                                     .getValueAt(linhaModelo, 1).toString();
-
-                            TelaEditarUsuario telaEdicao = new TelaEditarUsuario(cpf);
+                    
+                                TelaEditarUsuario telaEdicao = new TelaEditarUsuario(cpf, controller);
 
                             telaEdicao.setLocationRelativeTo(null);
                             telaEdicao.setVisible(true);
