@@ -44,18 +44,6 @@ public class TelaEditarUsuario extends javax.swing.JFrame {
         try {
             Usuario usuario = controller.findById(cpfUsuario);
 
-            if (usuario == null) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Usuário não encontrado.",
-                        "Erro",
-                        JOptionPane.ERROR_MESSAGE
-                );
-
-                dispose();
-                return;
-            }
-
             txtLogin.setText(usuario.getLogin());
             txtEmail.setText(usuario.getEmail());
             txtTelefone.setText(usuario.getTel());
@@ -270,17 +258,6 @@ public class TelaEditarUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailActionPerformed
 
-    public static void main(String args[]) {
-
-        UsuarioIDao dao = new UsuarioDao();
-        UsuarioIService service = new UsuarioService(dao);
-        UsuarioIController controller = new UsuarioController(service);
-
-        java.awt.EventQueue.invokeLater(() -> {
-            TelaEditarUsuario tela = new TelaEditarUsuario("CPF_DO_USUARIO", controller);
-            tela.setVisible(true);
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxGenero;

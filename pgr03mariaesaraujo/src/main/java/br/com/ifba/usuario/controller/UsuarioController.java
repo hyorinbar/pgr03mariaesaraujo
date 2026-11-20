@@ -13,6 +13,16 @@ public class UsuarioController implements UsuarioIController {
     public UsuarioController(UsuarioIService service) {
         this.service = service;
     }
+    
+    @Override
+    public void save(Usuario usuario, String confirmarSenha) {
+        service.save(usuario, confirmarSenha);
+    }
+    
+    @Override
+    public boolean autenticar(String login, String senha) {
+        return service.autenticar(login, senha);
+    }
 
     @Override
     public void save(Usuario usuario) {

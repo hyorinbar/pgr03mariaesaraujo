@@ -18,5 +18,8 @@ public interface UsuarioIController {
 
     Usuario findByLogin(String login);
 
+    void save(Usuario usuario, String confirmarSenha);
+    
+    boolean autenticar(String login, String senha);
 }
 

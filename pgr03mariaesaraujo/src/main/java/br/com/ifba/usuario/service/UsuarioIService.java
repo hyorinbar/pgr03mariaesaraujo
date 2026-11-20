@@ -17,5 +17,8 @@ public interface UsuarioIService {
     List<Usuario> findAll();
 
     Usuario findByLogin(String login);
-
+    
+    void save(Usuario usuario, String confirmarSenha);
+    
+    boolean autenticar(String login, String senha);
 }

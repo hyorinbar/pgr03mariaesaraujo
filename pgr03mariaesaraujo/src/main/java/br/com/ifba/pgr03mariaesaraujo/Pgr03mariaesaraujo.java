@@ -7,6 +7,7 @@ import br.com.ifba.usuario.service.UsuarioIService;
 import br.com.ifba.usuario.controller.UsuarioController;
 import br.com.ifba.usuario.controller.UsuarioIController;
 import br.com.ifba.usuario.view.TelaCadastro;
+import br.com.ifba.usuario.view.ViewLogin;
 import javax.swing.SwingUtilities;
 import org.flywaydb.core.Flyway;
 
@@ -37,7 +38,7 @@ public class Pgr03mariaesaraujo {
 
         // 4. Entrega o Controller à View
         SwingUtilities.invokeLater(() -> {
-            new TelaCadastro(controller).setVisible(true);
+            new ViewLogin(controller).setVisible(true);
         });
     }
 }

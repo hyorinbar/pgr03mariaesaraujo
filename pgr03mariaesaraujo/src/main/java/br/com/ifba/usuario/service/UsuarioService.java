@@ -60,8 +60,55 @@ public class UsuarioService implements UsuarioIService {
     }
 
     @Override
+    public void save(Usuario usuario, String confirmarSenha) {
+
+        if (!ValidadorUsuario.senhasConferem(
+                usuario.getSenha(), confirmarSenha)) {
+
+            throw new NegocioException("As senhas não coincidem.");
+        }
+
+        save(usuario);
+    }
+    
+    @Override
     public void update(Usuario usuario) {
+
+        if (usuario.getLogin() == null || usuario.getLogin().trim().isEmpty()
+                || usuario.getEmail() == null || usuario.getEmail().trim().isEmpty()
+                || usuario.getTel() == null || usuario.getTel().trim().isEmpty()) {
+
+            throw new NegocioException("Preencha todos os campos.");
+        }
+        
+        Usuario existente = dao.findByLogin(usuario.getLogin());
+
+        if (existente != null
+                && !existente.getCpf().equals(usuario.getCpf())) {
+
+            throw new NegocioException(
+                    "Este login já está cadastrado."
+            );
+        }
+
         dao.update(usuario);
+    }
+    
+    @Override
+    public boolean autenticar(String login, String senha) {
+
+        if (login == null || login.trim().isEmpty()
+                || senha == null || senha.isEmpty()) {
+            throw new NegocioException("Informe o login e a senha.");
+        }
+
+        Usuario usuario = dao.findByLogin(login);
+
+        if (usuario == null) {
+            return false;
+        }
+
+        return usuario.autenticar(login, senha);
     }
 
     @Override

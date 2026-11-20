@@ -30,6 +30,10 @@ public class TelaCadastro extends javax.swing.JFrame {
     public TelaCadastro(UsuarioIController controller) {
         this.controller = controller;
         initComponents();
+
+        setDefaultCloseOperation(
+                javax.swing.WindowConstants.DISPOSE_ON_CLOSE
+        );
     }
 
     /**
@@ -270,7 +274,7 @@ public class TelaCadastro extends javax.swing.JFrame {
 
         // Cadastro através do Controller
         try {
-            controller.save(usuario);
+            controller.save(usuario, confirmarSenha);
 
             JOptionPane.showMessageDialog(
                     this,
@@ -278,6 +282,8 @@ public class TelaCadastro extends javax.swing.JFrame {
                     "Sucesso",
                     JOptionPane.INFORMATION_MESSAGE
             );
+            
+        dispose();    
 
         } catch (RuntimeException e) {
 
@@ -318,15 +324,6 @@ public class TelaCadastro extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailActionPerformed
 
-    public static void main(String args[]) {
-        UsuarioIDao dao = new UsuarioDao();
-        UsuarioIService service = new UsuarioService(dao);
-        UsuarioIController controller = new UsuarioController(service);
-
-        java.awt.EventQueue.invokeLater(()
-                -> new TelaUsuarios(controller).setVisible(true)
-        );
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxGenero;

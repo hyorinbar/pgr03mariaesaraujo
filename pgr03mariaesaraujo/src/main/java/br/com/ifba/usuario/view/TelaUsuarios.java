@@ -17,6 +17,8 @@ import javax.swing.table.TableCellRenderer;
 import br.com.ifba.usuario.exception.UsuarioNaoEncontradoException;
 import br.com.ifba.usuario.service.UsuarioIService;
 import br.com.ifba.usuario.service.UsuarioService;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 
@@ -298,6 +300,15 @@ public class TelaUsuarios extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         TelaCadastro telaCadastro = new TelaCadastro(controller);
+
+        telaCadastro.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                carregarUsuarios();
+            }
+        });
+
+        telaCadastro.setLocationRelativeTo(this);
         telaCadastro.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -347,16 +358,6 @@ public class TelaUsuarios extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    
-    public static void main(String args[]) {
-        UsuarioIDao dao = new UsuarioDao();
-        UsuarioIService service = new UsuarioService(dao);
-        UsuarioIController controller = new UsuarioController(service);
-
-        java.awt.EventQueue.invokeLater(()
-                -> new TelaUsuarios(controller).setVisible(true)
-        );
-    } 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
