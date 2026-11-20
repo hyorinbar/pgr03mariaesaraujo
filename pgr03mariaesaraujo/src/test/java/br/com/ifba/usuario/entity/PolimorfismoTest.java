@@ -20,7 +20,7 @@ public class PolimorfismoTest {
             "1234"
         );
 
-        boolean resultado = paciente.autenticarUsuario(paciente, "paciente", "1234");
+        boolean resultado = paciente.realizarLogin(paciente, "paciente", "1234");
 
         assertTrue(resultado);
     }
@@ -37,7 +37,7 @@ public class PolimorfismoTest {
             "1234"
         );
 
-        boolean resultado = psicologo.autenticarUsuario(psicologo, "psicologo", "1234");
+        boolean resultado = psicologo.realizarLogin(psicologo, "psicologo", "1234");
 
         assertTrue(resultado);
     }

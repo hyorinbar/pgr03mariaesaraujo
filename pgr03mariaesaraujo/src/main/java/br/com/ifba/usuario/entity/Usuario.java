@@ -43,7 +43,7 @@ public class Usuario extends PersistenceEntity implements Autenticavel {
         return this.login.equals(login) && this.senha.equals(senha);
     }
     
-    public boolean autenticarUsuario(Autenticavel usuario, String login, String senha) {
+    public boolean realizarLogin(Autenticavel usuario, String login, String senha) {
         return usuario.autenticar(login, senha);
     }
     
