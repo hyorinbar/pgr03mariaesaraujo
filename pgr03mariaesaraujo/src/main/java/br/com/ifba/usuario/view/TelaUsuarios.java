@@ -3,8 +3,6 @@ package br.com.ifba.usuario.view;
 
 import br.com.ifba.usuario.controller.UsuarioController;
 import br.com.ifba.usuario.controller.UsuarioIController;
-import br.com.ifba.usuario.dao.UsuarioDao;
-import br.com.ifba.usuario.dao.UsuarioIDao;
 import br.com.ifba.usuario.entity.Usuario;
 import java.awt.Component;
 import javax.swing.AbstractCellEditor;

@@ -6,8 +6,6 @@ package br.com.ifba.usuario.view;
 
 import br.com.ifba.usuario.controller.UsuarioController;
 import br.com.ifba.usuario.controller.UsuarioIController;
-import br.com.ifba.usuario.dao.UsuarioDao;
-import br.com.ifba.usuario.dao.UsuarioIDao;
 import br.com.ifba.usuario.entity.Usuario;
 import br.com.ifba.usuario.interfaces.Autenticavel;
 import br.com.ifba.usuario.entity.Paciente; 
