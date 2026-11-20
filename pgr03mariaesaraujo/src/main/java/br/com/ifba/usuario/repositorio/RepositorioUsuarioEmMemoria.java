@@ -39,7 +39,6 @@ public class RepositorioUsuarioEmMemoria {
         }
     }
 
-    // Busca por login usando o banco de dados
     public Usuario buscarPorLoginLinear(String login) {
         EntityManager em = JPAUtil.getEntityManager();
 
@@ -61,7 +60,6 @@ public class RepositorioUsuarioEmMemoria {
         }
     }
 
-    // Busca por login usando o banco de dados
     public Usuario buscarPorLogin(String login) {
         return buscarPorLoginLinear(login);
     }

@@ -49,18 +49,18 @@ public class Usuario extends PersistenceEntity implements Autenticavel {
     
     // O login identifica o usuário no sistema e deve ser único.
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
+    public boolean equals(Object objeto) {
+        if (this == objeto) {
             return true;
         }
 
-        if (obj == null || getClass() != obj.getClass()) {
+        if (objeto == null || getClass() != objeto.getClass()) {
             return false;
         }
 
-        Usuario outro = (Usuario) obj;
+        Usuario outroUsuario = (Usuario) objeto;
 
-        return Objects.equals(this.login, outro.login);
+        return Objects.equals(this.login, outroUsuario.login);
     }
 
     @Override

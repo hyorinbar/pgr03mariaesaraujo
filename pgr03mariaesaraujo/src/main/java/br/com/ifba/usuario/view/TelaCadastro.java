@@ -246,19 +246,6 @@ public class TelaCadastro extends javax.swing.JFrame {
         String senha = new String(txtSenha.getPassword());
         String confirmarSenha = new String(txtConfirmarSenha.getPassword());
 
-        // Verificação das senhas
-        if (!senha.equals(confirmarSenha)) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "As senhas não coincidem.",
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE
-            );
-
-            return;
-        }
-
         // Criação do usuário
         Usuario usuario = new Usuario(
                 nome,
