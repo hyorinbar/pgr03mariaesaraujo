@@ -1,6 +1,8 @@
 
 package br.com.ifba.usuario.view;
 
+import br.com.ifba.usuario.controller.UsuarioController;
+import br.com.ifba.usuario.controller.UsuarioIController;
 import br.com.ifba.usuario.entity.Usuario;
 import java.awt.Component;
 import javax.swing.AbstractCellEditor;
@@ -11,24 +13,28 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import br.com.ifba.usuario.exception.UsuarioNaoEncontradoException;
+import br.com.ifba.usuario.service.UsuarioIService;
+import br.com.ifba.usuario.service.UsuarioService;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
-import br.com.ifba.usuario.dao.UsuarioDao;
-import br.com.ifba.usuario.dao.UsuarioIDao;
+
 
 /**
  *
  * @author guest
  */
 public class TelaUsuarios extends javax.swing.JFrame {
-    private final UsuarioIDao usuarioDao = new UsuarioDao();
+    private final UsuarioIController controller;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaUsuarios.class.getName());
 
     /**
      * Creates new form TelaUsuarios
      */
 
-        public TelaUsuarios() {
-            initComponents();
+    public TelaUsuarios(UsuarioIController controller) {
+        this.controller = controller;
+        initComponents();
             
             DefaultTableModel modelo =
                 (DefaultTableModel) tblUsuarios.getModel();
@@ -50,7 +56,7 @@ public class TelaUsuarios extends javax.swing.JFrame {
             modelo.setRowCount(0);
 
             try {
-                List<Usuario> usuarios = usuarioDao.findAll();
+                List<Usuario> usuarios = controller.findAll();
 
                 for (Usuario usuario : usuarios) {
                     modelo.addRow(new Object[]{
@@ -132,44 +138,50 @@ public class TelaUsuarios extends javax.swing.JFrame {
                     );
 
                     if (resposta == JOptionPane.YES_OPTION) {
-                        // Obtém o CPF da linha selecionada
+
                         String cpf = tabela.getModel()
                                 .getValueAt(linhaModelo, 1).toString();
 
-                        try {Usuario usuario = usuarioDao.findById(cpf);
+                        try {
+                            Usuario usuario = controller.findById(cpf);
 
-                                if (usuario == null) {
-                                    throw new UsuarioNaoEncontradoException(cpf);
-                                }
-
-                                usuarioDao.delete(usuario);
-
-                                ((DefaultTableModel) tabela.getModel())
-                                        .removeRow(linhaModelo);
-
-                                JOptionPane.showMessageDialog(
-                                        tabela,
-                                        "Usuário removido com sucesso!"
-                                );
-
-                            } catch (RuntimeException ex) {
-                                JOptionPane.showMessageDialog(
-                                        tabela,
-                                        "Erro ao remover usuário: " + ex.getMessage(),
-                                        "Erro",
-                                        JOptionPane.ERROR_MESSAGE
-                                );
+                            if (usuario == null) {
+                                throw new RuntimeException("Usuário não encontrado.");
                             }
-                        }
 
+                            controller.delete(usuario);
+
+                            carregarUsuarios();
+
+                            JOptionPane.showMessageDialog(
+                                    tabela,
+                                    "Usuário removido com sucesso!"
+                            );
+
+                        } catch (RuntimeException ex) {
+                            JOptionPane.showMessageDialog(
+                                    tabela,
+                                    "Erro ao remover usuário: " + ex.getMessage(),
+                                    "Erro",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+                        }
+                    }
                         }else if (acao.equals("Editar")) {
                             String cpf = tabela.getModel()
                                     .getValueAt(linhaModelo, 1).toString();
+                    
+                                        TelaEditarUsuario telaEdicao = new TelaEditarUsuario(cpf, controller);
 
-                            TelaEditarUsuario telaEdicao = new TelaEditarUsuario(cpf);
+                                        telaEdicao.addWindowListener(new WindowAdapter() {
+                                            @Override
+                                            public void windowClosed(WindowEvent e) {
+                                                carregarUsuarios();
+                                            }
+                                        });
 
-                            telaEdicao.setLocationRelativeTo(null);
-                            telaEdicao.setVisible(true);
+                                        telaEdicao.setLocationRelativeTo(null);
+                                        telaEdicao.setVisible(true);
                         }
 
                 fireEditingStopped();
@@ -291,7 +303,16 @@ public class TelaUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        TelaCadastro telaCadastro = new TelaCadastro();
+        TelaCadastro telaCadastro = new TelaCadastro(controller);
+
+        telaCadastro.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                carregarUsuarios();
+            }
+        });
+
+        telaCadastro.setLocationRelativeTo(this);
         telaCadastro.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -300,16 +321,16 @@ public class TelaUsuarios extends javax.swing.JFrame {
 
         if (login.isEmpty() || login.equals("Procurar")) {
             JOptionPane.showMessageDialog(
-                this,
-                "Digite o login do usuário.",
-                "Aviso",
-                JOptionPane.WARNING_MESSAGE
+                    this,
+                    "Digite o login do usuário.",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE
             );
             return;
         }
 
         try {
-            Usuario usuarioEncontrado = usuarioDao.findByLogin(login);
+            Usuario usuarioEncontrado = controller.findByLogin(login);
 
             DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
 
@@ -341,28 +362,6 @@ public class TelaUsuarios extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new TelaUsuarios().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;

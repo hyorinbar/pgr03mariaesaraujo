@@ -4,21 +4,25 @@
  */
 package br.com.ifba.usuario.view;
 
+import br.com.ifba.usuario.controller.UsuarioController;
+import br.com.ifba.usuario.controller.UsuarioIController;
 import br.com.ifba.usuario.entity.Usuario;
 import br.com.ifba.usuario.interfaces.Autenticavel;
 import br.com.ifba.usuario.entity.Paciente; 
 import br.com.ifba.usuario.entity.Psicologo;
+import br.com.ifba.usuario.service.UsuarioIService;
+import br.com.ifba.usuario.service.UsuarioService;
 
 public class ViewLogin extends javax.swing.JFrame {
-    
+    private final UsuarioIController controller;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ViewLogin.class.getName());
 
     /**
      * Creates new form ViewLogin
      */
-    public ViewLogin() {
+    public ViewLogin(UsuarioIController controller) {
+        this.controller = controller;
         initComponents();
-        
     }
 
     /**
@@ -142,92 +146,52 @@ public class ViewLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSenhaActionPerformed
 
     private void entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entrarActionPerformed
-        String login = txtLogin.getText();
+        String login = txtLogin.getText().trim();
         String senha = new String(txtSenha.getPassword());
 
-        Usuario usuario = new Usuario(
-            "dudasodre",
-            "",       // cpf
-            "",       // genero
-            "",       // dataNascimento
-            "",       // tel
-            "",       // email
-            "duda4321"
-        );
-        
-        if (usuario.autenticar(login, senha)) {
+        try {
 
-            confirmar.showMessageDialog(
-                this,
-                "Acesso liberado!",
-                "Login",
-                confirmar.INFORMATION_MESSAGE
-            );
+            if (controller.autenticar(login, senha)) {
 
-        } else {
+                confirmar.showMessageDialog(
+                        this,
+                        "Acesso liberado!",
+                        "Login",
+                        confirmar.INFORMATION_MESSAGE
+                );
+
+                TelaUsuarios telaUsuarios = new TelaUsuarios(controller);
+                telaUsuarios.setLocationRelativeTo(null);
+                telaUsuarios.setVisible(true);
+
+                this.dispose();
+
+            } else {
+
+                error.showMessageDialog(
+                        this,
+                        "Acesso negado!\nTente novamente.",
+                        "Erro",
+                        error.ERROR_MESSAGE
+                );
+            }
+
+        } catch (RuntimeException e) {
 
             error.showMessageDialog(
-                this,
-                "Acesso negado!\nTente novamente.",
-                "Erro",
-                error.ERROR_MESSAGE
+                    this,
+                    e.getMessage(),
+                    "Erro",
+                    error.ERROR_MESSAGE
             );
         }
-        
-    Paciente paciente = new Paciente(
-            "dudasodre",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "duda4321"
-    );
-
-    Psicologo psicologo = new Psicologo(
-            "dudasodre",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "duda4321",
-            "CRP123"
-    );
-    
-    paciente.realizarLogin(paciente, "dudasodre", "duda4321");
-    psicologo.realizarLogin(psicologo, "dudasodre", "duda4321");
     }//GEN-LAST:event_entrarActionPerformed
 
     private void lblCadastrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCadastrarMouseClicked
-        TelaCadastro telaCadastro = new TelaCadastro();
+        TelaCadastro telaCadastro = new TelaCadastro(controller);
         telaCadastro.setVisible(true);
     }//GEN-LAST:event_lblCadastrarMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new ViewLogin().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JOptionPane confirmar;

@@ -4,7 +4,11 @@
  */
 package br.com.ifba.usuario.view;
 
+import br.com.ifba.usuario.controller.UsuarioController;
+import br.com.ifba.usuario.controller.UsuarioIController;
 import br.com.ifba.usuario.entity.Usuario;
+import br.com.ifba.usuario.service.UsuarioIService;
+import br.com.ifba.usuario.service.UsuarioService;
 import java.awt.Color;
 import java.time.LocalDateTime;
 import javax.swing.BorderFactory;
@@ -12,23 +16,17 @@ import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import java.util.Arrays;
 import java.awt.HeadlessException;
-import br.com.ifba.usuario.dao.UsuarioDao;
-import br.com.ifba.usuario.dao.UsuarioIDao;
 
 
 public class TelaEditarUsuario extends javax.swing.JFrame {
-    private final UsuarioIDao usuarioDao = new UsuarioDao();
+    private final UsuarioIController controller;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaEditarUsuario.class.getName());
     private String cpfUsuario;
 
-    public TelaEditarUsuario() {
-        initComponents();
-        
-    }
-    
-    public TelaEditarUsuario(String cpf) {
+    public TelaEditarUsuario(String cpf, UsuarioIController controller) {
         initComponents();
 
+        this.controller = controller;
         this.cpfUsuario = cpf;
 
         setTitle("Editar Usuário");
@@ -42,19 +40,7 @@ public class TelaEditarUsuario extends javax.swing.JFrame {
     private void carregarDadosUsuario() {
         
         try {
-            Usuario usuario = usuarioDao.findById(cpfUsuario);
-
-            if (usuario == null) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Usuário não encontrado.",
-                        "Erro",
-                        JOptionPane.ERROR_MESSAGE
-                );
-
-                dispose();
-                return;
-            }
+            Usuario usuario = controller.findById(cpfUsuario);
 
             txtLogin.setText(usuario.getLogin());
             txtEmail.setText(usuario.getEmail());
@@ -216,7 +202,7 @@ public class TelaEditarUsuario extends javax.swing.JFrame {
         }
 
         try {
-            Usuario usuario = usuarioDao.findById(cpfUsuario);
+            Usuario usuario = controller.findById(cpfUsuario);
 
             if (usuario == null) {
                 JOptionPane.showMessageDialog(
@@ -233,7 +219,7 @@ public class TelaEditarUsuario extends javax.swing.JFrame {
             usuario.setTel(telefone);
             usuario.setGenero(genero);
 
-            usuarioDao.update(usuario);
+            controller.update(usuario);
 
             JOptionPane.showMessageDialog(
                     this,
@@ -270,30 +256,6 @@ public class TelaEditarUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new TelaEditarUsuario().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxGenero;
