@@ -129,78 +129,87 @@ public class TelaUsuarios extends javax.swing.JFrame {
             botao.addActionListener(e -> {
                 int linhaModelo = tabela.convertRowIndexToModel(linha);
 
-                if (acao.equals("Remover")) {
-                    int resposta = JOptionPane.showConfirmDialog(
-                            tabela,
-                            "Deseja realmente remover este usuário?",
-                            "Confirmar remoção",
-                            JOptionPane.YES_NO_OPTION
-                    );
-
-                    if (resposta == JOptionPane.YES_OPTION) {
-
-                        String cpf = tabela.getModel()
-                                .getValueAt(linhaModelo, 1).toString();
-
-                        try {
-                            Usuario usuario = controller.findById(cpf);
-
-                            if (usuario == null) {
-                                throw new RuntimeException("Usuário não encontrado.");
-                            }
-
-                            controller.delete(usuario);
-
-                            carregarUsuarios();
-
-                            JOptionPane.showMessageDialog(
-                                    tabela,
-                                    "Usuário removido com sucesso!"
-                            );
-
-                        } catch (RuntimeException ex) {
-                            JOptionPane.showMessageDialog(
-                                    tabela,
-                                    "Erro ao remover usuário: " + ex.getMessage(),
-                                    "Erro",
-                                    JOptionPane.ERROR_MESSAGE
-                            );
-                        }
-                    }
-                        }else if (acao.equals("Editar")) {
-                            String cpf = tabela.getModel()
-                                    .getValueAt(linhaModelo, 1).toString();
-                    
-                                        TelaEditarUsuario telaEdicao = new TelaEditarUsuario(cpf, controller);
-
-                                        telaEdicao.addWindowListener(new WindowAdapter() {
-                                            @Override
-                                            public void windowClosed(WindowEvent e) {
-                                                carregarUsuarios();
-                                            }
-                                        });
-
-                                        telaEdicao.setLocationRelativeTo(null);
-                                        telaEdicao.setVisible(true);
-                        }
+                if ("Remover".equals(acao)) {
+                    removerUsuario(linhaModelo);
+                } else if ("Editar".equals(acao)) {
+                    editarUsuario(linhaModelo);
+                }
 
                 fireEditingStopped();
             });
         }
 
+        private void removerUsuario(int linhaModelo) {
+            int resposta = JOptionPane.showConfirmDialog(
+                    tabela,
+                    "Deseja realmente remover este usuário?",
+                    "Confirmar remoção",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (resposta == JOptionPane.YES_OPTION) {
+                String cpf = tabela.getModel()
+                        .getValueAt(linhaModelo, 1).toString();
+
+                try {
+                    Usuario usuario = controller.findById(cpf);
+
+                    if (usuario == null) {
+                        throw new RuntimeException("Usuário não encontrado.");
+                    }
+
+                    controller.delete(usuario);
+
+                    carregarUsuarios();
+
+                    JOptionPane.showMessageDialog(
+                            tabela,
+                            "Usuário removido com sucesso!"
+                    );
+
+                } catch (RuntimeException ex) {
+                    JOptionPane.showMessageDialog(
+                            tabela,
+                            "Erro ao remover usuário: " + ex.getMessage(),
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            }
+        }
+
+        private void editarUsuario(int linhaModelo) {
+            String cpf = tabela.getModel()
+                    .getValueAt(linhaModelo, 1).toString();
+
+            TelaEditarUsuario telaEdicao
+                    = new TelaEditarUsuario(cpf, controller);
+
+            telaEdicao.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    carregarUsuarios();
+                }
+            });
+
+            telaEdicao.setLocationRelativeTo(null);
+            telaEdicao.setVisible(true);
+        }
+
         @Override
         public Component getTableCellEditorComponent(
-                JTable tabela, Object valor,
-                boolean selecionado, int linha, int coluna) {
+                JTable tabela, Object valor, boolean selecionado,
+                int linha, int coluna) {
 
             this.linha = linha;
-            botao.setText(acao);
+            botao.setText(valor == null ? acao : valor.toString());
+
             return botao;
         }
 
         @Override
         public Object getCellEditorValue() {
-            return acao;
+            return botao.getText();
         }
     }
     @SuppressWarnings("unchecked")
