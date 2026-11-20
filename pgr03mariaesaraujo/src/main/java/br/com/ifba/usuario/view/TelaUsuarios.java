@@ -153,8 +153,7 @@ public class TelaUsuarios extends javax.swing.JFrame {
 
                             controller.delete(usuario);
 
-                            ((DefaultTableModel) tabela.getModel())
-                                    .removeRow(linhaModelo);
+                            carregarUsuarios();
 
                             JOptionPane.showMessageDialog(
                                     tabela,

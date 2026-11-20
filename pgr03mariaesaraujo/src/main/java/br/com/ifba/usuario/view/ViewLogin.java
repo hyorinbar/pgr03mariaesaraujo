@@ -162,6 +162,12 @@ public class ViewLogin extends javax.swing.JFrame {
                         confirmar.INFORMATION_MESSAGE
                 );
 
+                TelaUsuarios telaUsuarios = new TelaUsuarios(controller);
+                telaUsuarios.setLocationRelativeTo(null);
+                telaUsuarios.setVisible(true);
+
+                this.dispose();
+
             } else {
 
                 error.showMessageDialog(
