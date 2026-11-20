@@ -32,14 +32,14 @@ public class ValidadorUsuarioTest {
     
     @Test
     public void testarSeTodosOsCamposForamPreenchidos (){
-        boolean error = ValidadorUsuario.camposPreenchidos("Maria", "12345678987", "18/01/2005", "74991070780", "maria@gmail.com", "Duda4321", "Duda4321");
+        boolean error = ValidadorUsuario.todosOsCamposEstaoPreenchidos("Maria", "12345678987", "18/01/2005", "74991070780", "maria@gmail.com", "Duda4321", "Duda4321");
 
         assertTrue(error);
     }
 
     @Test
     public void testarSeExisteCampoVazio (){
-        boolean error = ValidadorUsuario.camposPreenchidos("Maria", "", "18/01/2005", "74991070780", "maria@gmail.com", "Duda4321", "Duda4321");
+        boolean error = ValidadorUsuario.todosOsCamposEstaoPreenchidos("Maria", "", "18/01/2005", "74991070780", "maria@gmail.com", "Duda4321", "Duda4321");
 
         assertFalse(error);
     }

@@ -9,11 +9,11 @@ import java.util.List;
 
 public class UsuarioService implements UsuarioIService {
 
-    private final UsuarioIDao dao;
+    private final UsuarioIDao usuarioDao;
 
     // Injeção de dependência pelo construtor
     public UsuarioService(UsuarioIDao dao) {
-        this.dao = dao;
+        this.usuarioDao = dao;
     }
 
     @Override
@@ -51,12 +51,12 @@ public class UsuarioService implements UsuarioIService {
         }
 
         // Verifica se o login já existe
-        if (dao.findByLogin(usuario.getLogin()) != null) {
+        if (usuarioDao.findByLogin(usuario.getLogin()) != null) {
             throw new NegocioException("Este login já está cadastrado.");
         }
 
         // Se todas as regras forem respeitadas, salva
-        dao.save(usuario);
+        usuarioDao.save(usuario);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class UsuarioService implements UsuarioIService {
             throw new NegocioException("Preencha todos os campos.");
         }
         
-        Usuario existente = dao.findByLogin(usuario.getLogin());
+        Usuario existente = usuarioDao.findByLogin(usuario.getLogin());
 
         if (existente != null
                 && !existente.getCpf().equals(usuario.getCpf())) {
@@ -91,7 +91,7 @@ public class UsuarioService implements UsuarioIService {
             );
         }
 
-        dao.update(usuario);
+        usuarioDao.update(usuario);
     }
     
     @Override
@@ -102,7 +102,7 @@ public class UsuarioService implements UsuarioIService {
             throw new NegocioException("Informe o login e a senha.");
         }
 
-        Usuario usuario = dao.findByLogin(login);
+        Usuario usuario = usuarioDao.findByLogin(login);
 
         if (usuario == null) {
             return false;
@@ -113,21 +113,21 @@ public class UsuarioService implements UsuarioIService {
 
     @Override
     public void delete(Usuario usuario) {
-        dao.delete(usuario);
+        usuarioDao.delete(usuario);
     }
 
     @Override
     public Usuario findById(String cpf) {
-        return dao.findById(cpf);
+        return usuarioDao.findById(cpf);
     }
 
     @Override
     public List<Usuario> findAll() {
-        return dao.findAll();
+        return usuarioDao.findAll();
     }
 
     @Override
     public Usuario findByLogin(String login) {
-        return dao.findByLogin(login);
+        return usuarioDao.findByLogin(login);
     }
 }

@@ -20,7 +20,7 @@ public class ValidadorUsuario {
         return false;
     }
 
-    public static boolean camposPreenchidos(
+    public static boolean todosOsCamposEstaoPreenchidos(
             String nome,
             String cpf,
             String dataNascimento,
@@ -63,17 +63,17 @@ public class ValidadorUsuario {
         boolean possuiMinuscula = false;
         boolean possuiNumero = false;
 
-        for (char c : senha.toCharArray()) {
+        for (char caractere : senha.toCharArray()) {
 
-            if (Character.isUpperCase(c)) {
+            if (Character.isUpperCase(caractere)) {
                 possuiMaiuscula = true;
             }
 
-            if (Character.isLowerCase(c)) {
+            if (Character.isLowerCase(caractere)) {
                 possuiMinuscula = true;
             }
 
-            if (Character.isDigit(c)) {
+            if (Character.isDigit(caractere)) {
                 possuiNumero = true;
             }
         }
