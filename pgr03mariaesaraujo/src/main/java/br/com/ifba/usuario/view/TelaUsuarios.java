@@ -174,10 +174,17 @@ public class TelaUsuarios extends javax.swing.JFrame {
                             String cpf = tabela.getModel()
                                     .getValueAt(linhaModelo, 1).toString();
                     
-                                TelaEditarUsuario telaEdicao = new TelaEditarUsuario(cpf, controller);
+                                        TelaEditarUsuario telaEdicao = new TelaEditarUsuario(cpf, controller);
 
-                            telaEdicao.setLocationRelativeTo(null);
-                            telaEdicao.setVisible(true);
+                                        telaEdicao.addWindowListener(new WindowAdapter() {
+                                            @Override
+                                            public void windowClosed(WindowEvent e) {
+                                                carregarUsuarios();
+                                            }
+                                        });
+
+                                        telaEdicao.setLocationRelativeTo(null);
+                                        telaEdicao.setVisible(true);
                         }
 
                 fireEditingStopped();
