@@ -35,3 +35,11 @@ As ações dos botões da tabela são controladas por condições if e else if, 
 3. Inversão de Dependência (DIP)
 Arquivo: RepositorioUsuarioEmMemoria.java — linhas 4–7 e 12–30.
 A classe utiliza diretamente JPAUtil e EntityManager, ficando dependente da implementação concreta de persistência. Isso dificulta a substituição dessa implementação e a realização de testes isolados.
+
+Task 03
+
+### 1. Responsabilidade Única (SRP)
+A validação de confirmação de senha foi mantida no UsuarioService, removendo sua duplicação da TelaCadastro. Assim, a View fica responsável pela interação com o usuário e o Service pelas regras de negócio.
+
+### 2. Organização das ações da tela de usuários
+Na classe TelaUsuarios, as ações de editar e remover foram separadas em métodos próprios (`editarUsuario` e `removerUsuario`). Isso melhora a organização e facilita a manutenção do código.
