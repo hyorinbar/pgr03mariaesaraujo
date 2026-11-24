@@ -4,7 +4,9 @@ package br.com.ifba.usuario.controller;
 import br.com.ifba.usuario.entity.Psicologo;
 import br.com.ifba.usuario.service.PsicologoIService;
 import java.util.List;
+import org.springframework.stereotype.Controller;
 
+@Controller
 public class PsicologoController implements PsicologoIController {
 
     private final PsicologoIService service;

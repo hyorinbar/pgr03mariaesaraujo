@@ -1,7 +1,6 @@
 
 package br.com.ifba.usuario.view;
 
-import br.com.ifba.usuario.controller.UsuarioController;
 import br.com.ifba.usuario.controller.UsuarioIController;
 import br.com.ifba.usuario.entity.Usuario;
 import java.awt.Component;
@@ -12,18 +11,11 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
-import br.com.ifba.usuario.exception.UsuarioNaoEncontradoException;
-import br.com.ifba.usuario.service.UsuarioIService;
-import br.com.ifba.usuario.service.UsuarioService;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
-
-/**
- *
- * @author guest
- */
+@org.springframework.stereotype.Component
 public class TelaUsuarios extends javax.swing.JFrame {
     private final UsuarioIController controller;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaUsuarios.class.getName());

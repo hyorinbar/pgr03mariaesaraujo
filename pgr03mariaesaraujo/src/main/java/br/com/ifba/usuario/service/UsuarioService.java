@@ -6,7 +6,9 @@ import br.com.ifba.usuario.entity.Usuario;
 import br.com.ifba.usuario.exception.NegocioException;
 import br.com.ifba.usuario.validar.ValidadorUsuario;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UsuarioService implements UsuarioIService {
 
     private final UsuarioIDao usuarioDao;

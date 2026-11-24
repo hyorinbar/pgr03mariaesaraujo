@@ -17,7 +17,9 @@ import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import java.util.Arrays;
 import java.awt.HeadlessException;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TelaCadastro extends javax.swing.JFrame {
     private final UsuarioIController controller;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaCadastro.class.getName());
