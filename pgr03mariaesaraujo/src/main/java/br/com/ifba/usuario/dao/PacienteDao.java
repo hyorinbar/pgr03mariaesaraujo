@@ -8,13 +8,10 @@ import br.com.ifba.infrastructure.dao.GenericDao;
 import br.com.ifba.infrastructure.exception.DAOException;
 import br.com.ifba.infrastructure.util.JPAUtil;
 import br.com.ifba.usuario.entity.Paciente;
-
 import jakarta.persistence.EntityManager;
+import org.springframework.stereotype.Repository;
 
-/**
- *
- * @author guest
- */
+@Repository
 public class PacienteDao extends GenericDao<Paciente, String>
         implements PacienteIDao {
 

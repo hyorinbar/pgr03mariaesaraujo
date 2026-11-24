@@ -4,7 +4,9 @@ package br.com.ifba.usuario.controller;
 import br.com.ifba.usuario.entity.Usuario;
 import br.com.ifba.usuario.service.UsuarioIService;
 import java.util.List;
+import org.springframework.stereotype.Controller;
 
+@Controller
 public class UsuarioController implements UsuarioIController {
 
     private final UsuarioIService service;

@@ -4,7 +4,9 @@ package br.com.ifba.usuario.service;
 import br.com.ifba.usuario.dao.PsicologoIDao;
 import br.com.ifba.usuario.entity.Psicologo;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PsicologoService implements PsicologoIService {
 
     private final PsicologoIDao dao;

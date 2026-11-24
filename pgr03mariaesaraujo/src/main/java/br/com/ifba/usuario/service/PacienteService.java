@@ -4,7 +4,9 @@ package br.com.ifba.usuario.service;
 import br.com.ifba.usuario.dao.PacienteIDao;
 import br.com.ifba.usuario.entity.Paciente;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PacienteService implements PacienteIService {
 
     private final PacienteIDao dao;

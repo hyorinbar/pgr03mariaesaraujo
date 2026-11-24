@@ -12,7 +12,9 @@ import br.com.ifba.usuario.entity.Paciente;
 import br.com.ifba.usuario.entity.Psicologo;
 import br.com.ifba.usuario.service.UsuarioIService;
 import br.com.ifba.usuario.service.UsuarioService;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ViewLogin extends javax.swing.JFrame {
     private final UsuarioIController controller;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ViewLogin.class.getName());
